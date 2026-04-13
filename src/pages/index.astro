@@ -1,0 +1,130 @@
+---
+import Base from '../layouts/Base.astro';
+import { flavourCategories } from '../data/flavours';
+
+const popularFlavours = [
+  'Cookies & Cream', 'Peppermint Crisp Tart', 'Birthday Cake',
+  'Rocky Road', 'Salted Caramel Dark Chocolate', 'Malva Pudding',
+  'Madagascan Vanilla', 'Mango Granadilla Sorbet',
+];
+
+const allFlavours = flavourCategories.flatMap(c => c.flavours);
+const featured = popularFlavours
+  .map(name => allFlavours.find(f => f.name === name))
+  .filter(Boolean);
+
+const testimonials = [
+  { quote: "Not only was the ice cream exceptional, but their team was punctual, professional, and so fun to have at our wedding!", author: "George Georgiades" },
+  { quote: "The kids went absolutely crazy for the Phicycle — best birthday party decision we've ever made.", author: "Sarah M." },
+  { quote: "Professional setup, incredible flavours, zero hassle. We've booked them for every company event since.", author: "Thabo K., Corporate Events" },
+];
+---
+
+<Base title="Home">
+  <!-- Hero -->
+  <section class="relative bg-pauls-blue text-white overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-pauls-blue via-pauls-dark-blue to-pauls-blue opacity-90"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-36 text-center">
+      <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-4">
+        It's not a celebration<br />without Paul's
+      </h1>
+      <p class="text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-8">
+        Full-service ice cream catering for weddings, birthdays, corporate events and everything in between — across Johannesburg and beyond.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/book" class="bg-pauls-pink text-white px-8 py-3.5 rounded-full font-bold text-lg hover:bg-pink-500 transition-colors shadow-lg">
+          Book Your Event
+        </a>
+        <a href="/events" class="border-2 border-white/40 text-white px-8 py-3.5 rounded-full font-bold text-lg hover:bg-white/10 transition-colors">
+          See Our Setups
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- What We Do — 3 setup cards -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+    <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">What We Do</h2>
+    <p class="text-center text-pauls-dark-blue/60 mb-12 max-w-xl mx-auto">Three ways to bring Paul's to your event</p>
+
+    <div class="grid md:grid-cols-3 gap-8">
+      {[
+        { title: 'Scooping Phicycle', desc: 'Retro-inspired bicycle serving traditional scoops in cups and cones. Perfect for intimate celebrations.', icon: '🚲' },
+        { title: 'Unit Phicycle', desc: 'No-power-needed freezer bicycle serving mini pints. Great for kids and large outdoor gatherings.', icon: '🧊' },
+        { title: 'Scooping Cart', desc: 'Sleek cart with up to 6 bains for 100–250 guests. Ideal for weddings, festivals, and corporate events.', icon: '🛒' },
+      ].map(({ title, desc, icon }) => (
+        <a href="/events" class="group bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow text-center">
+          <div class="text-4xl mb-4">{icon}</div>
+          <h3 class="text-xl font-bold mb-2 group-hover:text-pauls-blue transition-colors">{title}</h3>
+          <p class="text-pauls-dark-blue/60 text-sm">{desc}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="bg-pauls-light-pink py-16 md:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">How It Works</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+        {[
+          { step: '1', title: 'Enquire', desc: 'Fill in our booking form with your event details' },
+          { step: '2', title: 'We Plan', desc: 'We confirm flavours, setup type, and send a quote' },
+          { step: '3', title: 'We Show Up', desc: 'Full setup 30 minutes before your event' },
+          { step: '4', title: 'You Enjoy', desc: 'We serve, you celebrate — then we clean up' },
+        ].map(({ step, title, desc }) => (
+          <div class="text-center">
+            <div class="w-12 h-12 rounded-full bg-pauls-blue text-white font-bold text-lg flex items-center justify-center mx-auto mb-3">
+              {step}
+            </div>
+            <h3 class="font-bold mb-1">{title}</h3>
+            <p class="text-sm text-pauls-dark-blue/60">{desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+    <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">What People Say</h2>
+    <div class="grid md:grid-cols-3 gap-8">
+      {testimonials.map(({ quote, author }) => (
+        <blockquote class="bg-white rounded-2xl p-8 shadow-sm">
+          <p class="text-pauls-dark-blue/80 italic mb-4">"{quote}"</p>
+          <footer class="text-sm font-bold text-pauls-blue">— {author}</footer>
+        </blockquote>
+      ))}
+    </div>
+  </section>
+
+  <!-- Flavours Teaser -->
+  <section class="bg-pauls-light-blue/40 py-16 md:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">Our Flavours</h2>
+      <p class="text-center text-pauls-dark-blue/60 mb-12">30+ handcrafted flavours to choose from</p>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+        {featured.map((f) => (
+          <div class="bg-white rounded-xl p-4 text-center shadow-sm">
+            <h3 class="font-bold text-sm">{f!.name}</h3>
+            <p class="text-xs text-pauls-dark-blue/50 mt-1 line-clamp-2">{f!.description}</p>
+          </div>
+        ))}
+      </div>
+      <div class="text-center mt-8">
+        <a href="/flavours" class="text-pauls-blue font-bold hover:underline">See All Flavours &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Banner -->
+  <section class="bg-pauls-pink text-white py-16 text-center">
+    <div class="max-w-3xl mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">Ready to make your event unforgettable?</h2>
+      <p class="text-white/80 mb-8">Let us bring the scoops — you bring the celebration.</p>
+      <a href="/book" class="bg-white text-pauls-pink px-8 py-3.5 rounded-full font-bold text-lg hover:bg-pauls-offwhite transition-colors shadow-lg">
+        Book Now
+      </a>
+    </div>
+  </section>
+</Base>
