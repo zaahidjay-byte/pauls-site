@@ -70,6 +70,7 @@ export const equipment: Equipment[] = [
 export const customBrandingCopy =
   "Want it in your colours? We offer custom branding on our equipment — your logo and brand identity on the setup — for clients who want the experience fully theirs. Available at an additional cost; tell us what you have in mind in your quote request.";
 
+export const CONTACT_EMAIL = 'bookings@paulshomemade.co.za';
 export const CONTACT_PHONE_DISPLAY = '061 407 3799';
 export const CONTACT_PHONE_TEL = '+27614073799';
 export const CONTACT_WHATSAPP = 'https://wa.me/27614073799';

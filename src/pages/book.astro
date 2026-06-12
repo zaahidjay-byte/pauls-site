@@ -219,7 +219,8 @@ const venueTypes = ['Indoor', 'Outdoor', 'Both'];
 
 <script>
   const ENQUIRY_URL = 'https://admin.paulshomemade.co.za/enquiry';
-  const UNITS_MIN = 40;
+  // Per-setup mini-pint minimums; the highest among selected setups wins
+  const UNIT_MINIMUMS: Record<string, number> = { phicycle: 40, 'countertop-freezer': 60 };
   const BAINS_MIN = 4;
 
   const form = document.getElementById('quote-form') as HTMLFormElement;
@@ -237,12 +238,11 @@ const venueTypes = ['Indoor', 'Outdoor', 'Both'];
   );
 
   // --- conditional steppers ---
-  function phicycleSelected() {
-    return equipmentBoxes.some((b) => b.checked && b.value === 'phicycle');
-  }
   function unitsMin() {
-    // 40-unit minimum applies to the Phicycle; countertop-freezer minimum not yet confirmed
-    return phicycleSelected() ? UNITS_MIN : 1;
+    const mins = equipmentBoxes
+      .filter((b) => b.checked)
+      .map((b) => UNIT_MINIMUMS[b.value] ?? 0);
+    return Math.max(1, ...mins);
   }
   function refreshSteppers() {
     const showUnits = equipmentBoxes.some((b) => b.checked && b.dataset.needsUnits);
@@ -250,9 +250,11 @@ const venueTypes = ['Indoor', 'Outdoor', 'Both'];
     unitsWrap.classList.toggle('hidden', !showUnits);
     bainsWrap.classList.toggle('hidden', !showBains);
     if (showUnits) {
-      unitsInput.min = String(unitsMin());
-      unitsHint.classList.toggle('hidden', !phicycleSelected());
-      if (!unitsInput.value && phicycleSelected()) unitsInput.value = String(UNITS_MIN);
+      const min = unitsMin();
+      unitsInput.min = String(min);
+      unitsHint.textContent = `Minimum order: ${min} units.`;
+      unitsHint.classList.toggle('hidden', min <= 1);
+      if (!unitsInput.value && min > 1) unitsInput.value = String(min);
     } else {
       unitsInput.value = '';
     }
@@ -332,8 +334,8 @@ const venueTypes = ['Indoor', 'Outdoor', 'Both'];
 
     if (!unitsWrap.classList.contains('hidden') && unitsInput.value) {
       const min = unitsMin();
-      if (Number(unitsInput.value) < min && min === UNITS_MIN) {
-        setFieldError('units', `The Phicycle has a minimum order of ${UNITS_MIN} units.`);
+      if (min > 1 && Number(unitsInput.value) < min) {
+        setFieldError('units', `Your selected setups have a minimum order of ${min} units.`);
         ok = false;
       }
     }

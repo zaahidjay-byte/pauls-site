@@ -1,5 +1,5 @@
 ---
-import { CONTACT_PHONE_DISPLAY, CONTACT_PHONE_TEL, CONTACT_WHATSAPP, INSTAGRAM_URL, INSTAGRAM_HANDLE } from '../data/equipment';
+import { CONTACT_EMAIL, CONTACT_PHONE_DISPLAY, CONTACT_PHONE_TEL, CONTACT_WHATSAPP, INSTAGRAM_URL, INSTAGRAM_HANDLE } from '../data/equipment';
 
 const year = new Date().getFullYear();
 ---
@@ -34,6 +34,9 @@ const year = new Date().getFullYear();
             <a href={`tel:${CONTACT_PHONE_TEL}`} class="hover:text-white transition-colors">{CONTACT_PHONE_DISPLAY}</a>
             <span class="text-white/50"> · </span>
             <a href={CONTACT_WHATSAPP} class="hover:text-white transition-colors" rel="noopener" target="_blank">WhatsApp</a>
+          </li>
+          <li>
+            <a href={`mailto:${CONTACT_EMAIL}`} class="hover:text-white transition-colors">{CONTACT_EMAIL}</a>
           </li>
           <li>Johannesburg, South Africa</li>
         </ul>

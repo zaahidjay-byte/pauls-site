@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import { CONTACT_PHONE_DISPLAY, CONTACT_PHONE_TEL, CONTACT_WHATSAPP, INSTAGRAM_URL, INSTAGRAM_HANDLE } from '../data/equipment';
+import { CONTACT_EMAIL, CONTACT_PHONE_DISPLAY, CONTACT_PHONE_TEL, CONTACT_WHATSAPP, INSTAGRAM_URL, INSTAGRAM_HANDLE } from '../data/equipment';
 ---
 
 <Base title="Contact" description="Get in touch with Paul's Homemade Events in Johannesburg. Call or WhatsApp 061 407 3799, or request a quote online.">
@@ -23,6 +23,12 @@ import { CONTACT_PHONE_DISPLAY, CONTACT_PHONE_TEL, CONTACT_WHATSAPP, INSTAGRAM_U
         >
           Message us on WhatsApp
         </a>
+      </div>
+
+      <!-- Email -->
+      <div class="bg-white rounded-2xl p-8 shadow-sm text-center">
+        <h2 class="font-bold text-lg mb-2">Email Us</h2>
+        <a href={`mailto:${CONTACT_EMAIL}`} class="text-pauls-blue font-bold hover:underline">{CONTACT_EMAIL}</a>
       </div>
 
       <!-- Instagram -->
