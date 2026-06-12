@@ -22,7 +22,7 @@ const venueTypes = ['Indoor', 'Outdoor', 'Both'];
 
 <Base title="Get a Quote" description="Request a quote from Paul's Homemade Events. Tell us about your event and we'll send your formal quote.">
   <section class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-    <h1 class="text-4xl font-bold text-center mb-2">Get a Quote</h1>
+    <h1 class="text-4xl text-center mb-2">Get a Quote</h1>
     <p class="text-center text-pauls-dark-blue/60 mb-12">
       Fill in the details below and we'll send your formal quote.
     </p>
@@ -41,8 +41,8 @@ const venueTypes = ['Indoor', 'Outdoor', 'Both'];
             <p class="field-error hidden text-sm text-red-600 mt-1" data-error-for="name"></p>
           </div>
           <div>
-            <label for="email" class="block text-sm font-medium mb-1">Email</label>
-            <input type="email" id="email" name="email" class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
+            <label for="email" class="block text-sm font-medium mb-1">Email *</label>
+            <input type="email" id="email" name="email" required class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
             <p class="field-error hidden text-sm text-red-600 mt-1" data-error-for="email"></p>
           </div>
           <div>
@@ -50,7 +50,7 @@ const venueTypes = ['Indoor', 'Outdoor', 'Both'];
             <input type="tel" id="phone" name="phone" maxlength="20" class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
             <p class="field-error hidden text-sm text-red-600 mt-1" data-error-for="phone"></p>
           </div>
-          <p class="sm:col-span-2 text-xs text-pauls-dark-blue/50 -mt-2">Give us at least one way to reach you — email or phone.</p>
+          <p class="sm:col-span-2 text-xs text-pauls-dark-blue/50 -mt-2">We'll send your quote to your email. Phone is optional — it just helps us reach you faster.</p>
         </div>
       </fieldset>
 
@@ -210,7 +210,7 @@ const venueTypes = ['Indoor', 'Outdoor', 'Both'];
     <!-- Success message (hidden by default) -->
     <div id="form-success" class="hidden text-center py-16">
       <div class="text-5xl mb-4">&#127846;</div>
-      <h2 class="text-2xl font-bold mb-2">Thanks — your quote request is in.</h2>
+      <h2 class="text-2xl mb-2">Thanks — your quote request is in.</h2>
       <p class="text-pauls-dark-blue/60 mb-6">We'll send your formal quote shortly.</p>
       <a href="/" class="text-pauls-blue font-bold hover:underline">Back to Home</a>
     </div>
@@ -326,8 +326,8 @@ const venueTypes = ['Indoor', 'Outdoor', 'Both'];
     const eventDate = (form.elements.namedItem('event_date') as HTMLInputElement).value;
 
     if (!name) { setFieldError('name', 'Please tell us your name.'); ok = false; }
-    if (!email && !phone) {
-      setFieldError('email', 'Give us an email or a phone number so we can send your quote.');
+    if (!email) {
+      setFieldError('email', 'We need your email address to send your quote.');
       ok = false;
     }
     if (!eventDate) { setFieldError('event_date', 'Please pick your event date.'); ok = false; }

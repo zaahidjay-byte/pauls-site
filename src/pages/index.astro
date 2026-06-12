@@ -26,7 +26,7 @@ const testimonials = [
   <section class="relative bg-pauls-blue text-white overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-br from-pauls-blue via-pauls-dark-blue to-pauls-blue opacity-90"></div>
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-36 text-center">
-      <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-4">
+      <h1 class="text-4xl md:text-6xl leading-tight mb-4">
         Your big day,<br />scooped to perfection
       </h1>
       <p class="text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-8">
@@ -45,20 +45,21 @@ const testimonials = [
 
   <!-- Equipment overview -->
   <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-    <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">What We Do</h2>
+    <p class="eyebrow">Equipment</p>
+    <h2 class="text-3xl md:text-4xl text-center mb-4">What We Do</h2>
     <p class="text-center text-pauls-dark-blue/60 mb-12 max-w-xl mx-auto">Five ways to bring Paul's to your event</p>
 
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
       {equipment.map(({ slug, name, blurb, icon }) => (
         <a href={`/events#${slug}`} class="group bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow text-center">
           <div class="text-4xl mb-4">{icon}</div>
-          <h3 class="text-xl font-bold mb-2 group-hover:text-pauls-blue transition-colors">{name}</h3>
+          <h3 class="text-xl mb-2 group-hover:text-pauls-blue transition-colors">{name}</h3>
           <p class="text-pauls-dark-blue/60 text-sm line-clamp-3">{blurb}</p>
         </a>
       ))}
       <a href="/book" class="group bg-pauls-blue text-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow text-center flex flex-col items-center justify-center">
         <div class="text-4xl mb-4">📝</div>
-        <h3 class="text-xl font-bold mb-2">Not sure which?</h3>
+        <h3 class="text-xl mb-2">Not sure which?</h3>
         <p class="text-white/80 text-sm">Tell us about your event and we'll recommend the right setup in your quote.</p>
       </a>
     </div>
@@ -67,7 +68,8 @@ const testimonials = [
   <!-- How It Works -->
   <section class="bg-pauls-light-blue/40 py-16 md:py-24">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">How It Works</h2>
+      <p class="eyebrow">The Process</p>
+      <h2 class="text-3xl md:text-4xl text-center mb-12">How It Works</h2>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
         {[
           { step: '1', title: 'Enquire', desc: 'Fill in our quote form with your event details' },
@@ -79,7 +81,7 @@ const testimonials = [
             <div class="w-12 h-12 rounded-full bg-pauls-blue text-white font-bold text-lg flex items-center justify-center mx-auto mb-3">
               {step}
             </div>
-            <h3 class="font-bold mb-1">{title}</h3>
+            <h3 class="mb-1">{title}</h3>
             <p class="text-sm text-pauls-dark-blue/60">{desc}</p>
           </div>
         ))}
@@ -89,7 +91,8 @@ const testimonials = [
 
   <!-- Testimonials -->
   <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-    <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">What People Say</h2>
+    <p class="eyebrow">Testimonials</p>
+  <h2 class="text-3xl md:text-4xl text-center mb-12">What People Say</h2>
     <div class="grid md:grid-cols-3 gap-8">
       {testimonials.map(({ quote, author }) => (
         <blockquote class="bg-white rounded-2xl p-8 shadow-sm">
@@ -103,12 +106,12 @@ const testimonials = [
   <!-- Flavours Teaser -->
   <section class="bg-pauls-light-blue/40 py-16 md:py-24">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">Our Flavours</h2>
+      <h2 class="text-3xl md:text-4xl text-center mb-4">Our Flavours</h2>
       <p class="text-center text-pauls-dark-blue/60 mb-12">30+ handcrafted flavours to choose from</p>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
         {featured.map((f) => (
           <div class="bg-white rounded-xl p-4 text-center shadow-sm">
-            <h3 class="font-bold text-sm">{f!.name}</h3>
+            <h3 class="text-sm">{f!.name}</h3>
             <p class="text-xs text-pauls-dark-blue/50 mt-1 line-clamp-2">{f!.description}</p>
           </div>
         ))}
@@ -122,7 +125,7 @@ const testimonials = [
   <!-- CTA Banner -->
   <section class="bg-pauls-pink text-white py-16 text-center">
     <div class="max-w-3xl mx-auto px-4">
-      <h2 class="text-3xl md:text-4xl font-bold mb-4">Ready to make your event unforgettable?</h2>
+      <h2 class="text-3xl md:text-4xl mb-4">Ready to make your event unforgettable?</h2>
       <p class="text-white/80 mb-8">Let us bring the scoops — you bring the celebration.</p>
       <a href="/book" class="bg-white text-pauls-pink px-8 py-3.5 rounded-full font-bold text-lg hover:bg-pauls-offwhite transition-colors shadow-lg">
         Get a Quote
