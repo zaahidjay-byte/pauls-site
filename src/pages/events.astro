@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import { equipment, customBrandingCopy } from '../data/equipment';
 
 const toppings = [
   'Rainbow Vermicelli Sprinkles',
@@ -10,38 +11,14 @@ const toppings = [
   'Mini Marshmallows',
   'Mini Smarties',
 ];
-
-const setups = [
-  {
-    name: 'Scooping Phicycle',
-    desc: 'Retro-inspired bicycle serving traditional scoops in cups and cones.',
-    details: ['Minimum: 2 bains (~56 scoops)', 'Requires electricity'],
-    ideal: 'Birthdays, small weddings, office celebrations, outdoor events, year-end functions, engagements, baby showers, bachelorette parties',
-    slug: 'Scooping Phicycle',
-  },
-  {
-    name: 'Unit Phicycle',
-    desc: 'No-power-required freezer-style bicycle serving mini pints.',
-    details: ['Minimum: 40 units', 'No electricity needed', 'Accommodates 200+ guests'],
-    ideal: "Kids' birthdays, small spaces, outdoor gatherings, corporate functions, school events, sports days",
-    slug: 'Unit Phicycle',
-  },
-  {
-    name: 'Scooping Cart',
-    desc: 'Sleek, compact cart with up to 6 bains for large events.',
-    details: ['Minimum: 4 bains (~112 scoops)', 'Up to 6 bains (~168 scoops)', 'Serves 100–250 guests', 'Requires electricity'],
-    ideal: 'Weddings, corporate events, festivals, bar/bat mitzvahs, brand activations, large celebrations',
-    slug: 'Scooping Cart',
-  },
-];
 ---
 
-<Base title="Events" description="Full-service ice cream catering for events in Johannesburg. Scooping Phicycle, Unit Phicycle, and Scooping Cart setups available.">
+<Base title="Events & Setups" description="Five ice cream setups for events in Johannesburg: the Phicycle, Scooping Freezer, Scooping Cart, the Tuk Tuk, and Countertop Freezer.">
   <!-- Hero -->
   <section class="bg-pauls-blue text-white py-20 md:py-28 text-center">
     <div class="max-w-4xl mx-auto px-4">
-      <h1 class="text-4xl md:text-5xl font-bold mb-4">It's not a celebration without Paul's</h1>
-      <p class="text-lg text-white/80">Event ice cream catering across Johannesburg and beyond</p>
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">Your big day, scooped to perfection</h1>
+      <p class="text-lg text-white/80">Five setups. One unforgettable ice cream experience.</p>
     </div>
   </section>
 
@@ -50,7 +27,7 @@ const setups = [
     <h2 class="text-3xl font-bold text-center mb-12">How It Works</h2>
     <div class="grid grid-cols-1 sm:grid-cols-5 gap-6 max-w-5xl mx-auto">
       {[
-        { step: '1', title: 'Tell us about your event', desc: 'Fill in the booking form with your details' },
+        { step: '1', title: 'Tell us about your event', desc: 'Fill in the quote form with your details' },
         { step: '2', title: "We'll get back to you", desc: 'Confirm flavours, setup, and send a quote' },
         { step: '3', title: 'We arrive early', desc: '30-minute pre-event setup at your venue' },
         { step: '4', title: 'We serve your guests', desc: 'Full-service scooping team at your event' },
@@ -67,35 +44,44 @@ const setups = [
     </div>
   </section>
 
-  <!-- Service Tiers -->
-  <section class="bg-pauls-light-pink py-16 md:py-24">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <!-- Setups -->
+  <section class="bg-pauls-light-blue/30 py-16 md:py-24">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
       <h2 class="text-3xl font-bold text-center mb-12">Our Setups</h2>
-      <div class="grid md:grid-cols-3 gap-8">
-        {setups.map(({ name, desc, details, ideal, slug }) => (
-          <div class="bg-white rounded-2xl p-8 shadow-sm flex flex-col">
-            <h3 class="text-xl font-bold text-pauls-dark-blue mb-2">{name}</h3>
-            <p class="text-pauls-dark-blue/60 text-sm mb-4">{desc}</p>
-            <ul class="text-sm space-y-1 mb-4">
-              {details.map((d) => (
-                <li class="flex items-start gap-2">
-                  <span class="text-pauls-blue mt-0.5">&#10003;</span>
-                  <span>{d}</span>
-                </li>
-              ))}
-            </ul>
-            <div class="mt-auto">
-              <p class="text-xs text-pauls-dark-blue/50 mb-4">
-                <strong>Ideal for:</strong> {ideal}
-              </p>
-              <a
-                href={`/book?setup=${encodeURIComponent(slug)}`}
-                class="block text-center bg-pauls-blue text-white px-6 py-2.5 rounded-full font-bold text-sm hover:bg-blue-700 transition-colors"
-              >
-                Book the {name}
-              </a>
+      <div class="space-y-10">
+        {equipment.map(({ slug, name, tagline, blurb, specs, ideal, icon }) => (
+          <article id={slug} class="bg-white rounded-2xl shadow-sm overflow-hidden md:flex scroll-mt-24">
+            <!-- Photo slot — human will drop event photography into src/assets/photos/ -->
+            <div class="md:w-2/5 bg-gradient-to-br from-pauls-blue to-pauls-dark-blue flex items-center justify-center text-7xl py-16 md:py-0">
+              {icon}
             </div>
-          </div>
+            <div class="p-8 md:w-3/5 flex flex-col">
+              <h3 class="text-2xl font-bold text-pauls-dark-blue mb-1">{name}</h3>
+              {tagline && <p class="text-sm font-bold text-pauls-pink mb-3">{tagline}</p>}
+              <p class="text-pauls-dark-blue/70 text-sm leading-relaxed mb-4">{blurb}</p>
+              <ul class="text-sm space-y-1 mb-4">
+                {specs.map((d) => (
+                  <li class="flex items-start gap-2">
+                    <span class="text-pauls-blue mt-0.5">&#10003;</span>
+                    <span>{d}</span>
+                  </li>
+                ))}
+              </ul>
+              <div class="mt-auto">
+                {ideal && (
+                  <p class="text-xs text-pauls-dark-blue/50 mb-4">
+                    <strong>Ideal for:</strong> {ideal}.
+                  </p>
+                )}
+                <a
+                  href={`/book?equipment=${slug}`}
+                  class="inline-block text-center bg-pauls-blue text-white px-8 py-2.5 rounded-full font-bold text-sm hover:bg-blue-700 transition-colors"
+                >
+                  Get a quote
+                </a>
+              </div>
+            </div>
+          </article>
         ))}
       </div>
     </div>
@@ -130,9 +116,7 @@ const setups = [
         </div>
         <div class="mt-8">
           <h3 class="font-bold mb-2">Custom Branding</h3>
-          <p class="text-sm text-pauls-dark-blue/60">
-            Branded wrapping available for corporate events and brand activations. Mention it in your booking and we'll discuss the options.
-          </p>
+          <p class="text-sm text-pauls-dark-blue/60">{customBrandingCopy}</p>
         </div>
       </div>
     </div>
@@ -154,7 +138,7 @@ const setups = [
       <h2 class="text-3xl font-bold mb-4">Ready to book?</h2>
       <p class="text-white/80 mb-8">Tell us about your event and we'll handle the rest.</p>
       <a href="/book" class="bg-white text-pauls-pink px-8 py-3.5 rounded-full font-bold text-lg hover:bg-pauls-offwhite transition-colors shadow-lg">
-        Book Your Event
+        Get a Quote
       </a>
     </div>
   </section>
