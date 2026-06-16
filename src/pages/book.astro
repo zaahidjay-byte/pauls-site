@@ -1,33 +1,33 @@
 ---
 import Base from '../layouts/Base.astro';
+import { equipment } from '../data/equipment';
 
-const eventTypes = ['Birthday', 'Corporate Event', 'Wedding/Celebration', 'Brand Activation', 'Private Function', 'Other'];
-const setupOptions = ['Scooping Phicycle', 'Unit Phicycle', 'Scooping Cart', 'Not Sure'];
-const venueTypes = ['Indoor', 'Outdoor', 'Both'];
-const toppings = [
-  'Rainbow Vermicelli Sprinkles',
-  'Chocolate Vermicelli Sprinkles',
-  'Crushed Peanuts',
-  'Crushed Oreos',
-  'Rainbow Hundreds & Thousands',
-  'Mini Marshmallows',
-  'Mini Smarties',
+// Values must match the backend EventType enum
+const eventTypes = [
+  { value: 'wedding', label: 'Wedding' },
+  { value: 'birthday', label: 'Birthday' },
+  { value: 'corporate', label: 'Corporate Event' },
+  { value: 'private', label: 'Private Function' },
+  { value: 'school', label: 'School Event' },
+  { value: 'festival', label: 'Festival' },
+  { value: 'market', label: 'Market' },
+  { value: 'expo', label: 'Expo' },
+  { value: 'popup', label: 'Pop-up' },
+  { value: 'community', label: 'Community Event' },
+  { value: 'other', label: 'Other' },
 ];
+
+const venueTypes = ['Indoor', 'Outdoor', 'Both'];
 ---
 
-<Base title="Book Your Event" description="Book Paul's Homemade Ice Cream for your next event in Johannesburg. Fill in the form and we'll get back to you within 24 hours.">
+<Base title="Get a Quote" description="Request a quote from Paul's Homemade Events. Tell us about your event and we'll send your formal quote.">
   <section class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-    <h1 class="text-4xl font-bold text-center mb-2">Book Your Event</h1>
+    <h1 class="text-4xl text-center mb-2">Get a Quote</h1>
     <p class="text-center text-pauls-dark-blue/60 mb-12">
-      Fill in the details below and we'll get back to you within 24 hours.
+      Fill in the details below and we'll send your formal quote.
     </p>
 
-    <form
-      id="booking-form"
-      action="https://formspree.io/f/YOUR_FORM_ID"
-      method="POST"
-      class="space-y-8"
-    >
+    <form id="quote-form" class="space-y-8" novalidate>
       <!-- Your Details -->
       <fieldset>
         <legend class="text-lg font-bold mb-4 flex items-center gap-2">
@@ -35,22 +35,22 @@ const toppings = [
           Your Details
         </legend>
         <div class="grid sm:grid-cols-2 gap-4">
-          <div>
+          <div class="sm:col-span-2">
             <label for="name" class="block text-sm font-medium mb-1">Name *</label>
-            <input type="text" id="name" name="name" required class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
-          </div>
-          <div>
-            <label for="surname" class="block text-sm font-medium mb-1">Surname *</label>
-            <input type="text" id="surname" name="surname" required class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
-          </div>
-          <div>
-            <label for="phone" class="block text-sm font-medium mb-1">Phone *</label>
-            <input type="tel" id="phone" name="phone" required class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
+            <input type="text" id="name" name="name" required maxlength="255" class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
+            <p class="field-error hidden text-sm text-red-600 mt-1" data-error-for="name"></p>
           </div>
           <div>
             <label for="email" class="block text-sm font-medium mb-1">Email *</label>
             <input type="email" id="email" name="email" required class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
+            <p class="field-error hidden text-sm text-red-600 mt-1" data-error-for="email"></p>
           </div>
+          <div>
+            <label for="phone" class="block text-sm font-medium mb-1">Phone</label>
+            <input type="tel" id="phone" name="phone" maxlength="20" class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
+            <p class="field-error hidden text-sm text-red-600 mt-1" data-error-for="phone"></p>
+          </div>
+          <p class="sm:col-span-2 text-xs text-pauls-dark-blue/50 -mt-2">We'll send your quote to your email. Phone is optional — it just helps us reach you faster.</p>
         </div>
       </fieldset>
 
@@ -62,27 +62,28 @@ const toppings = [
         </legend>
         <div class="grid sm:grid-cols-2 gap-4">
           <div>
+            <label for="event-type" class="block text-sm font-medium mb-1">Event Type</label>
+            <select id="event-type" name="event_type" class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none bg-white">
+              {eventTypes.map(({ value, label }) => <option value={value}>{label}</option>)}
+            </select>
+          </div>
+          <div>
             <label for="event-date" class="block text-sm font-medium mb-1">Event Date *</label>
             <input type="date" id="event-date" name="event_date" required class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
+            <p class="field-error hidden text-sm text-red-600 mt-1" data-error-for="event_date"></p>
           </div>
           <div>
-            <label for="guests" class="block text-sm font-medium mb-1">Number of Guests *</label>
-            <input type="number" id="guests" name="guests" min="1" required class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
+            <label for="start-time" class="block text-sm font-medium mb-1">Start Time</label>
+            <input type="time" id="start-time" name="start_time" class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
           </div>
           <div>
-            <label for="start-time" class="block text-sm font-medium mb-1">Start Time *</label>
-            <input type="time" id="start-time" name="start_time" required class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
+            <label for="end-time" class="block text-sm font-medium mb-1">End Time</label>
+            <input type="time" id="end-time" name="end_time" class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
           </div>
           <div>
-            <label for="end-time" class="block text-sm font-medium mb-1">End Time *</label>
-            <input type="time" id="end-time" name="end_time" required class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
-          </div>
-          <div class="sm:col-span-2">
-            <label for="event-type" class="block text-sm font-medium mb-1">Event Type *</label>
-            <select id="event-type" name="event_type" required class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none bg-white">
-              <option value="">Select event type...</option>
-              {eventTypes.map((t) => <option value={t}>{t}</option>)}
-            </select>
+            <label for="headcount" class="block text-sm font-medium mb-1">Number of Guests</label>
+            <input type="number" id="headcount" name="headcount" min="1" inputmode="numeric" class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
+            <p class="field-error hidden text-sm text-red-600 mt-1" data-error-for="headcount"></p>
           </div>
         </div>
       </fieldset>
@@ -95,147 +96,336 @@ const toppings = [
         </legend>
         <div class="grid sm:grid-cols-2 gap-4">
           <div>
-            <label for="venue-name" class="block text-sm font-medium mb-1">Venue Name *</label>
-            <input type="text" id="venue-name" name="venue_name" required class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
+            <label for="venue" class="block text-sm font-medium mb-1">Venue Name</label>
+            <input type="text" id="venue" name="venue" maxlength="255" class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
           </div>
           <div>
-            <label for="city" class="block text-sm font-medium mb-1">City / Area *</label>
-            <input type="text" id="city" name="city" required class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
-          </div>
-          <div class="sm:col-span-2">
-            <label for="venue-address" class="block text-sm font-medium mb-1">Venue Address *</label>
-            <input type="text" id="venue-address" name="venue_address" required class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
-          </div>
-          <div>
-            <label for="venue-type" class="block text-sm font-medium mb-1">Venue Type *</label>
-            <select id="venue-type" name="venue_type" required class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none bg-white">
+            <label for="venue-type" class="block text-sm font-medium mb-1">Venue Type</label>
+            <select id="venue-type" name="venue_type" class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none bg-white">
               <option value="">Select...</option>
               {venueTypes.map((v) => <option value={v}>{v}</option>)}
             </select>
           </div>
-          <div>
-            <label for="accessibility" class="block text-sm font-medium mb-1">Accessibility Notes</label>
-            <input type="text" id="accessibility" name="accessibility_notes" placeholder="e.g. stairs, gravel path" class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
+          <div class="sm:col-span-2">
+            <label for="address" class="block text-sm font-medium mb-1">Event Address</label>
+            <input type="text" id="address" name="address" maxlength="512" class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
+            <p class="text-xs text-pauls-dark-blue/50 mt-1">Full street address — for travel calculation in your quote.</p>
+            <p class="field-error hidden text-sm text-red-600 mt-1" data-error-for="address"></p>
           </div>
         </div>
       </fieldset>
 
-      <!-- Setup & Extras -->
+      <!-- Equipment -->
       <fieldset>
         <legend class="text-lg font-bold mb-4 flex items-center gap-2">
           <span class="w-6 h-1 bg-pauls-pink rounded-full"></span>
-          Setup & Extras
+          Equipment
         </legend>
-        <div class="space-y-4">
-          <div class="grid sm:grid-cols-2 gap-4">
-            <div>
-              <label for="setup" class="block text-sm font-medium mb-1">Preferred Setup *</label>
-              <select id="setup" name="preferred_setup" required class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none bg-white">
-                <option value="">Select setup...</option>
-                {setupOptions.map((s) => <option value={s}>{s}</option>)}
-              </select>
-            </div>
-            <div>
-              <label class="block text-sm font-medium mb-1">Electricity Available? *</label>
-              <div class="flex gap-4 pt-2">
-                {['Yes', 'No', 'Not Sure'].map((opt) => (
-                  <label class="flex items-center gap-1.5 cursor-pointer">
-                    <input type="radio" name="electricity" value={opt} required class="accent-pauls-blue" />
-                    <span class="text-sm">{opt}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-          </div>
+        <p class="text-sm text-pauls-dark-blue/60 mb-4">Pick one or more setups — we'll confirm the best fit in your quote.</p>
+        <div class="grid sm:grid-cols-2 gap-3">
+          {equipment.map(({ slug, name, specs, icon, needsUnits, needsBains }) => (
+            <label class="equipment-card relative flex items-start gap-3 rounded-xl border-2 border-gray-200 bg-white p-4 cursor-pointer transition-colors has-[:checked]:border-pauls-blue has-[:checked]:bg-pauls-light-blue/30">
+              <input
+                type="checkbox"
+                name="equipment"
+                value={slug}
+                data-needs-units={needsUnits ? '1' : ''}
+                data-needs-bains={needsBains ? '1' : ''}
+                class="mt-1 accent-pauls-blue"
+              />
+              <span>
+                <span class="block font-bold text-sm">{icon} {name}</span>
+                <span class="block text-xs text-pauls-dark-blue/50 mt-1">{specs.join(' · ')}</span>
+              </span>
+            </label>
+          ))}
+        </div>
+        <p class="field-error hidden text-sm text-red-600 mt-1" data-error-for="equipment"></p>
 
-          <div>
-            <label class="block text-sm font-medium mb-2">Toppings</label>
-            <div class="flex flex-wrap gap-3">
-              {toppings.map((t) => (
-                <label class="flex items-center gap-1.5 cursor-pointer">
-                  <input type="checkbox" name="toppings" value={t} class="accent-pauls-pink rounded" />
-                  <span class="text-sm">{t}</span>
-                </label>
-              ))}
+        <!-- Conditional steppers -->
+        <div class="grid sm:grid-cols-2 gap-4 mt-4">
+          <div id="units-wrap" class="hidden">
+            <label for="units" class="block text-sm font-medium mb-1">Mini-pint units</label>
+            <div class="flex items-center gap-2">
+              <button type="button" data-step="units" data-dir="-1" class="w-10 h-10 rounded-lg border border-gray-300 font-bold text-lg hover:bg-gray-50" aria-label="Fewer units">&minus;</button>
+              <input type="number" id="units" name="units" min="0" max="10000" inputmode="numeric" class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-center focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
+              <button type="button" data-step="units" data-dir="1" class="w-10 h-10 rounded-lg border border-gray-300 font-bold text-lg hover:bg-gray-50" aria-label="More units">+</button>
             </div>
+            <p id="units-hint" class="text-xs text-pauls-dark-blue/50 mt-1">Minimum order: 40 units.</p>
+            <p class="field-error hidden text-sm text-red-600 mt-1" data-error-for="units"></p>
           </div>
-
-          <div>
-            <label class="block text-sm font-medium mb-1">Custom Branding?</label>
-            <div class="flex gap-4 pt-1">
-              {['Yes', 'No'].map((opt) => (
-                <label class="flex items-center gap-1.5 cursor-pointer">
-                  <input type="radio" name="custom_branding" value={opt} class="accent-pauls-blue" />
-                  <span class="text-sm">{opt}</span>
-                </label>
-              ))}
+          <div id="bains-wrap" class="hidden">
+            <label for="bains" class="block text-sm font-medium mb-1">Bains (flavour tubs)</label>
+            <div class="flex items-center gap-2">
+              <button type="button" data-step="bains" data-dir="-1" class="w-10 h-10 rounded-lg border border-gray-300 font-bold text-lg hover:bg-gray-50" aria-label="Fewer bains">&minus;</button>
+              <input type="number" id="bains" name="bains" min="0" max="50" inputmode="numeric" class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-center focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
+              <button type="button" data-step="bains" data-dir="1" class="w-10 h-10 rounded-lg border border-gray-300 font-bold text-lg hover:bg-gray-50" aria-label="More bains">+</button>
             </div>
-          </div>
-
-          <div>
-            <label for="notes" class="block text-sm font-medium mb-1">Additional Notes</label>
-            <textarea id="notes" name="additional_notes" rows="3" placeholder="Anything else we should know about your event..." class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none resize-y"></textarea>
+            <p class="text-xs text-pauls-dark-blue/50 mt-1">Minimum: 4 bains (~28–32 scoops each).</p>
+            <p class="field-error hidden text-sm text-red-600 mt-1" data-error-for="bains"></p>
           </div>
         </div>
       </fieldset>
 
+      <!-- Extras -->
+      <fieldset>
+        <legend class="text-lg font-bold mb-4 flex items-center gap-2">
+          <span class="w-6 h-1 bg-pauls-blue rounded-full"></span>
+          Extras
+        </legend>
+        <div class="space-y-4">
+          <div>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="branding-toggle" class="accent-pauls-pink rounded" />
+              <span class="text-sm font-medium">I'm interested in custom branding</span>
+            </label>
+            <div id="branding-wrap" class="hidden mt-2">
+              <textarea id="custom-branding" name="custom_branding" rows="2" placeholder="Tell us what you have in mind — your logo, colours, brand identity on the setup..." class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none resize-y"></textarea>
+            </div>
+          </div>
+          <div>
+            <label for="special-requests" class="block text-sm font-medium mb-1">Special Requests</label>
+            <textarea id="special-requests" name="special_requests" rows="3" placeholder="Flavour wishes, toppings, accessibility notes, anything else we should know..." class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none resize-y"></textarea>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Honeypot — must stay empty -->
+      <div class="absolute -left-[9999px] top-auto w-px h-px overflow-hidden" aria-hidden="true">
+        <label for="website">Website</label>
+        <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+      </div>
+
+      <p id="form-error" class="hidden text-center text-sm font-medium text-red-600"></p>
+
       <button
         type="submit"
-        class="w-full bg-pauls-blue text-white py-3.5 rounded-full font-bold text-lg hover:bg-blue-700 transition-colors shadow-lg"
+        id="submit-btn"
+        class="w-full bg-pauls-blue text-white py-3.5 rounded-full font-bold text-lg hover:bg-blue-700 transition-colors shadow-lg disabled:opacity-60"
       >
-        Submit Booking Request
+        Request My Quote
       </button>
     </form>
 
     <!-- Success message (hidden by default) -->
     <div id="form-success" class="hidden text-center py-16">
       <div class="text-5xl mb-4">&#127846;</div>
-      <h2 class="text-2xl font-bold mb-2">Thanks! We've got your booking request.</h2>
-      <p class="text-pauls-dark-blue/60 mb-6">We'll be in touch within 24 hours to confirm your event details.</p>
+      <h2 class="text-2xl mb-2">Thanks — your quote request is in.</h2>
+      <p class="text-pauls-dark-blue/60 mb-6">We'll send your formal quote shortly.</p>
       <a href="/" class="text-pauls-blue font-bold hover:underline">Back to Home</a>
     </div>
   </section>
 </Base>
 
 <script>
-  // Pre-fill setup from URL params (when coming from /events CTA buttons)
+  const ENQUIRY_URL = 'https://admin.paulshomemade.co.za/enquiry';
+  // Per-setup mini-pint minimums; the highest among selected setups wins
+  const UNIT_MINIMUMS: Record<string, number> = { phicycle: 40, 'countertop-freezer': 60 };
+  const BAINS_MIN = 4;
+
+  const form = document.getElementById('quote-form') as HTMLFormElement;
+  const success = document.getElementById('form-success');
+  const formError = document.getElementById('form-error') as HTMLParagraphElement;
+  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+  const unitsWrap = document.getElementById('units-wrap')!;
+  const bainsWrap = document.getElementById('bains-wrap')!;
+  const unitsInput = document.getElementById('units') as HTMLInputElement;
+  const bainsInput = document.getElementById('bains') as HTMLInputElement;
+  const unitsHint = document.getElementById('units-hint')!;
+
+  const equipmentBoxes = Array.from(
+    form.querySelectorAll<HTMLInputElement>('input[name="equipment"]')
+  );
+
+  // --- conditional steppers ---
+  function unitsMin() {
+    const mins = equipmentBoxes
+      .filter((b) => b.checked)
+      .map((b) => UNIT_MINIMUMS[b.value] ?? 0);
+    return Math.max(1, ...mins);
+  }
+  function refreshSteppers() {
+    const showUnits = equipmentBoxes.some((b) => b.checked && b.dataset.needsUnits);
+    const showBains = equipmentBoxes.some((b) => b.checked && b.dataset.needsBains);
+    unitsWrap.classList.toggle('hidden', !showUnits);
+    bainsWrap.classList.toggle('hidden', !showBains);
+    if (showUnits) {
+      const min = unitsMin();
+      unitsInput.min = String(min);
+      unitsHint.textContent = `Minimum order: ${min} units.`;
+      unitsHint.classList.toggle('hidden', min <= 1);
+      if (!unitsInput.value && min > 1) unitsInput.value = String(min);
+    } else {
+      unitsInput.value = '';
+    }
+    if (showBains) {
+      bainsInput.min = String(BAINS_MIN);
+      if (!bainsInput.value) bainsInput.value = String(BAINS_MIN);
+    } else {
+      bainsInput.value = '';
+    }
+  }
+  equipmentBoxes.forEach((b) => b.addEventListener('change', refreshSteppers));
+
+  // stepper +/- buttons
+  form.querySelectorAll<HTMLButtonElement>('button[data-step]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const input = btn.dataset.step === 'units' ? unitsInput : bainsInput;
+      const min = btn.dataset.step === 'units' ? unitsMin() : BAINS_MIN;
+      const max = Number(input.max || 10000);
+      const cur = Number(input.value || 0);
+      const next = cur + Number(btn.dataset.dir);
+      input.value = String(Math.min(max, Math.max(min, next)));
+    });
+  });
+
+  // custom branding reveal
+  const brandingToggle = document.getElementById('branding-toggle') as HTMLInputElement;
+  const brandingWrap = document.getElementById('branding-wrap')!;
+  const brandingText = document.getElementById('custom-branding') as HTMLTextAreaElement;
+  brandingToggle.addEventListener('change', () => {
+    brandingWrap.classList.toggle('hidden', !brandingToggle.checked);
+    if (!brandingToggle.checked) brandingText.value = '';
+  });
+
+  // pre-select equipment from URL (?equipment=slug or comma-separated)
   const params = new URLSearchParams(window.location.search);
-  const setup = params.get('setup');
-  if (setup) {
-    const select = document.getElementById('setup') as HTMLSelectElement;
-    if (select) {
-      for (const option of select.options) {
-        if (option.value === setup) {
-          option.selected = true;
-          break;
-        }
-      }
+  const pre = params.get('equipment');
+  if (pre) {
+    const slugs = pre.split(',');
+    equipmentBoxes.forEach((b) => {
+      if (slugs.includes(b.value)) b.checked = true;
+    });
+    refreshSteppers();
+  }
+
+  // --- validation + submit ---
+  function clearErrors() {
+    formError.classList.add('hidden');
+    form.querySelectorAll('.field-error').forEach((el) => {
+      el.classList.add('hidden');
+      el.textContent = '';
+    });
+  }
+  function setFieldError(field: string, message: string) {
+    const el = form.querySelector(`[data-error-for="${field}"]`);
+    if (el) {
+      el.textContent = message;
+      el.classList.remove('hidden');
+    } else {
+      formError.textContent = message;
+      formError.classList.remove('hidden');
     }
   }
 
-  // Handle form submission
-  const form = document.getElementById('booking-form') as HTMLFormElement;
-  const success = document.getElementById('form-success');
+  function validate(): boolean {
+    let ok = true;
+    const name = (form.elements.namedItem('name') as HTMLInputElement).value.trim();
+    const email = (form.elements.namedItem('email') as HTMLInputElement).value.trim();
+    const phone = (form.elements.namedItem('phone') as HTMLInputElement).value.trim();
+    const eventDate = (form.elements.namedItem('event_date') as HTMLInputElement).value;
 
-  form?.addEventListener('submit', async (e) => {
+    if (!name) { setFieldError('name', 'Please tell us your name.'); ok = false; }
+    if (!email) {
+      setFieldError('email', 'We need your email address to send your quote.');
+      ok = false;
+    }
+    if (!eventDate) { setFieldError('event_date', 'Please pick your event date.'); ok = false; }
+
+    if (!unitsWrap.classList.contains('hidden') && unitsInput.value) {
+      const min = unitsMin();
+      if (min > 1 && Number(unitsInput.value) < min) {
+        setFieldError('units', `Your selected setups have a minimum order of ${min} units.`);
+        ok = false;
+      }
+    }
+    if (!bainsWrap.classList.contains('hidden') && bainsInput.value) {
+      if (Number(bainsInput.value) < BAINS_MIN) {
+        setFieldError('bains', `Scooping setups have a minimum of ${BAINS_MIN} bains.`);
+        ok = false;
+      }
+    }
+    return ok;
+  }
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const data = new FormData(form);
+    clearErrors();
+    if (!validate()) return;
+
+    const val = (n: string) => {
+      const el = form.elements.namedItem(n) as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | null;
+      return el ? el.value.trim() : '';
+    };
+    const orNull = (s: string) => (s === '' ? null : s);
+    const intOrNull = (s: string) => (s === '' ? null : parseInt(s, 10));
+
+    const payload = {
+      name: val('name'),
+      email: orNull(val('email')),
+      phone: orNull(val('phone')),
+      event_type: val('event_type') || 'private',
+      event_date: val('event_date'),
+      start_time: orNull(val('start_time')),
+      end_time: orNull(val('end_time')),
+      headcount: intOrNull(val('headcount')),
+      venue: orNull(val('venue')),
+      venue_type: orNull(val('venue_type')),
+      address: orNull(val('address')),
+      equipment: equipmentBoxes.filter((b) => b.checked).map((b) => b.value),
+      units: unitsWrap.classList.contains('hidden') ? null : intOrNull(unitsInput.value),
+      bains: bainsWrap.classList.contains('hidden') ? null : intOrNull(bainsInput.value),
+      custom_branding: brandingToggle.checked ? orNull(brandingText.value.trim()) || 'Interested — details to follow' : null,
+      special_requests: orNull(val('special_requests')),
+      website: val('website'), // honeypot
+    };
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
 
     try {
-      const res = await fetch(form.action, {
+      const res = await fetch(ENQUIRY_URL, {
         method: 'POST',
-        body: data,
-        headers: { Accept: 'application/json' },
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(payload),
       });
 
-      if (res.ok) {
+      if (res.status === 201) {
         form.classList.add('hidden');
         success?.classList.remove('hidden');
-      } else {
-        alert('Something went wrong. Please try again or email us directly at bookings@paulshomemade.co.za');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
       }
+
+      if (res.status === 429) {
+        formError.textContent = "You've sent a few requests in a row — please try again in a little while.";
+        formError.classList.remove('hidden');
+        return;
+      }
+
+      if (res.status === 422) {
+        const body = await res.json().catch(() => null);
+        const errors = body?.detail;
+        if (Array.isArray(errors)) {
+          for (const err of errors) {
+            const field = Array.isArray(err.loc) ? String(err.loc[err.loc.length - 1]) : '';
+            setFieldError(field, err.msg || 'Please check this field.');
+          }
+        } else {
+          formError.textContent = 'Please check the highlighted fields and try again.';
+          formError.classList.remove('hidden');
+        }
+        return;
+      }
+
+      formError.textContent = 'Something went wrong sending your request. Please try again, or WhatsApp us on 061 407 3799.';
+      formError.classList.remove('hidden');
     } catch {
-      alert('Something went wrong. Please try again or email us directly at bookings@paulshomemade.co.za');
+      formError.textContent = 'Something went wrong sending your request. Please try again, or WhatsApp us on 061 407 3799.';
+      formError.classList.remove('hidden');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Request My Quote';
     }
   });
 </script>
