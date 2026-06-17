@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <filter id="wob" x="-12%" y="-12%" width="124%" height="124%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.016" numOctaves="2" seed="4" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2.2"/>
+    </filter>
+  </defs>
+  <rect width="200" height="200" fill="#ffffff"/>
+
+  <!-- subject (wobbly hand-drawn outlines) -->
+  <g filter="url(#wob)" stroke="#1E2A78" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+    <!-- board -->
+    <rect x="46" y="32" width="108" height="140" rx="14" fill="#A9C4F5"/>
+    <!-- clip -->
+    <rect x="82" y="22" width="36" height="18" rx="6" fill="#F4A8D8"/>
+    <rect x="92" y="15" width="16" height="12" rx="4" fill="#ffffff"/>
+    <!-- paper -->
+    <rect x="58" y="46" width="84" height="118" rx="8" fill="#ffffff"/>
+    <!-- form lines -->
+    <g stroke-width="4">
+      <path d="M72 72 H128" fill="none"/>
+      <path d="M72 86 H122" fill="none"/>
+      <path d="M72 100 H116" fill="none"/>
+    </g>
+  </g>
+
+  <!-- pencil (own group so it sits cleanly on top) -->
+  <g filter="url(#wob)" stroke="#1E2A78" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"
+     transform="rotate(34 140 126)">
+    <rect x="131" y="86" width="18" height="12" rx="3" fill="#F4A8D8"/>
+    <rect x="131" y="96" width="18" height="52" rx="2" fill="#5B6FE0"/>
+    <path d="M131 148 L140 168 L149 148 Z" fill="#ffffff"/>
+    <path d="M136 156 L140 168 L144 156 Z" fill="#1E2A78" stroke="none"/>
+  </g>
+
+  <!-- face (crisp) -->
+  <g>
+    <circle cx="80" cy="131" r="6.5" fill="#F4A8D8"/>
+    <circle cx="120" cy="131" r="6.5" fill="#F4A8D8"/>
+    <circle cx="90" cy="124" r="3.4" fill="#1E2A78"/>
+    <circle cx="110" cy="124" r="3.4" fill="#1E2A78"/>
+    <path d="M90 132 Q100 141 110 132" fill="none" stroke="#1E2A78" stroke-width="4" stroke-linecap="round"/>
+  </g>
+
+  <!-- sprinkles -->
+  <g stroke-linecap="round" stroke-width="4.5">
+    <path d="M30 60 l8 4" stroke="#5B6FE0"/>
+    <path d="M34 150 l-2 9" stroke="#F4A8D8"/>
+    <path d="M168 64 l7 -4" stroke="#A9C4F5"/>
+    <path d="M172 146 l4 8" stroke="#5B6FE0"/>
+    <path d="M150 180 l8 -2" stroke="#F4A8D8"/>
+  </g>
+</svg>

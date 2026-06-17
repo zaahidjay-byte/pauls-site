@@ -1,24 +1,10 @@
 ---
 import Base from '../layouts/Base.astro';
-import { flavourCategories } from '../data/flavours';
 import { equipment } from '../data/equipment';
-
-const popularFlavours = [
-  'Cookies & Cream', 'Peppermint Crisp Tart', 'Birthday Cake',
-  'Rocky Road', 'Salted Caramel Dark Chocolate', 'Malva Pudding',
-  'Madagascan Vanilla', 'Mango Granadilla Sorbet',
-];
-
-const allFlavours = flavourCategories.flatMap(c => c.flavours);
-const featured = popularFlavours
-  .map(name => allFlavours.find(f => f.name === name))
-  .filter(Boolean);
-
-const testimonials = [
-  { quote: "Not only was the ice cream exceptional, but their team was punctual, professional, and so fun to have at our wedding!", author: "George Georgiades" },
-  { quote: "The kids went absolutely crazy for the Phicycle — best birthday party decision we've ever made.", author: "Sarah M." },
-  { quote: "Professional setup, incredible flavours, zero hassle. We've booked them for every company event since.", author: "Thabo K., Corporate Events" },
-];
+// Sections cloned from the Paul's Homemade (.com) homepage — "Seriously good fun"
+// down through the flavour carousel, Paul's Difference, booking CTA and reviews.
+// Images are placeholders (in /home-assets) to be replaced with our own pictures.
+import homeSections from '../partials/home-sections.html?raw';
 ---
 
 <Base title="Home">
@@ -68,20 +54,17 @@ const testimonials = [
   <!-- How It Works -->
   <section class="bg-pauls-light-blue/40 py-16 md:py-24">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <p class="eyebrow">The Process</p>
       <h2 class="text-3xl md:text-4xl text-center mb-12">How It Works</h2>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
         {[
-          { step: '1', title: 'Enquire', desc: 'Fill in our quote form with your event details' },
-          { step: '2', title: 'We Plan', desc: 'We confirm flavours, setup type, and send a quote' },
-          { step: '3', title: 'We Show Up', desc: 'Full setup 30 minutes before your event' },
-          { step: '4', title: 'You Enjoy', desc: 'We serve, you celebrate — then we clean up' },
-        ].map(({ step, title, desc }) => (
+          { icon: '/home-assets/how-it-works/1-enquire.png', title: 'Enquire', desc: 'Fill in our quote form with your event details' },
+          { icon: '/home-assets/how-it-works/2-plan.png', title: 'We Plan', desc: 'We confirm flavours, setup type, and send a quote' },
+          { icon: '/home-assets/how-it-works/3-setup.png', title: 'We Show Up', desc: 'Full setup 30 minutes before your event' },
+          { icon: '/home-assets/how-it-works/4-celebrate.png', title: 'You Enjoy', desc: 'We serve, you celebrate — then we clean up' },
+        ].map(({ icon, title, desc }) => (
           <div class="text-center">
-            <div class="w-12 h-12 rounded-full bg-pauls-blue text-white font-bold text-lg flex items-center justify-center mx-auto mb-3">
-              {step}
-            </div>
-            <h3 class="mb-1">{title}</h3>
+            <img src={icon} alt={title} width="141" height="141" loading="lazy" class="w-[123px] h-[123px] md:w-[141px] md:h-[141px] mx-auto mb-3" />
+            <h3 class="text-xl mb-1">{title}</h3>
             <p class="text-sm text-pauls-dark-blue/60">{desc}</p>
           </div>
         ))}
@@ -89,47 +72,34 @@ const testimonials = [
     </div>
   </section>
 
-  <!-- Testimonials -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-    <p class="eyebrow">Testimonials</p>
-  <h2 class="text-3xl md:text-4xl text-center mb-12">What People Say</h2>
-    <div class="grid md:grid-cols-3 gap-8">
-      {testimonials.map(({ quote, author }) => (
-        <blockquote class="bg-white rounded-2xl p-8 shadow-sm">
-          <p class="text-pauls-dark-blue/80 italic mb-4">"{quote}"</p>
-          <footer class="text-sm font-bold text-pauls-blue">— {author}</footer>
-        </blockquote>
-      ))}
-    </div>
-  </section>
+  <!-- ===== Cloned .com homepage sections: Seriously good fun → carousel → difference → booking → reviews ===== -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@3.2.2/dist/css/splide-core.min.css" />
+  <Fragment set:html={homeSections} />
 
-  <!-- Flavours Teaser -->
-  <section class="bg-pauls-light-blue/40 py-16 md:py-24">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 class="text-3xl md:text-4xl text-center mb-4">Our Flavours</h2>
-      <p class="text-center text-pauls-dark-blue/60 mb-12">30+ handcrafted flavours to choose from</p>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-        {featured.map((f) => (
-          <div class="bg-white rounded-xl p-4 text-center shadow-sm">
-            <h3 class="text-sm">{f!.name}</h3>
-            <p class="text-xs text-pauls-dark-blue/50 mt-1 line-clamp-2">{f!.description}</p>
-          </div>
-        ))}
-      </div>
-      <div class="text-center mt-8">
-        <a href="/flavours" class="text-pauls-blue font-bold hover:underline">See All Flavours &rarr;</a>
-      </div>
-    </div>
-  </section>
+  <!-- Splide carousel runtime + init (verbatim from the .com homepage) -->
+  <script is:inline src="https://cdn.jsdelivr.net/npm/@splidejs/splide@3.2.2/dist/js/splide.min.js"></script>
+  <script is:inline src="https://cdn.jsdelivr.net/npm/@splidejs/splide-extension-auto-scroll@0.5.3/dist/js/splide-extension-auto-scroll.min.js"></script>
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', function () {
+      var splideElements = document.querySelectorAll('.splide');
+      for (var i = 0; i < splideElements.length; i++) {
+        new Splide(splideElements[i], {
+          type: 'loop',
+          autoWidth: true,
+          height: 'auto',
+          drag: 'free',
+          arrows: false,
+          pagination: false,
+          label: 'Image Slider',
+          reduceMotion: { speed: 0, rewindSpeed: 0, autoplay: 'pause' },
+          autoScroll: { speed: 0.6, pauseOnHover: false, pauseOnFocus: false },
+          breakpoints: {
+            991: { autoScroll: { speed: 0.6, pauseOnHover: false, pauseOnFocus: false } },
+            767: { autoScroll: { speed: 0.6, pauseOnHover: false, pauseOnFocus: false } }
+          }
+        }).mount(window.splide.Extensions);
+      }
+    });
+  </script>
 
-  <!-- CTA Banner -->
-  <section class="bg-pauls-pink text-white py-16 text-center">
-    <div class="max-w-3xl mx-auto px-4">
-      <h2 class="text-3xl md:text-4xl mb-4">Ready to make your event unforgettable?</h2>
-      <p class="text-white/80 mb-8">Let us bring the scoops — you bring the celebration.</p>
-      <a href="/book" class="bg-white text-pauls-pink px-8 py-3.5 rounded-full font-bold text-lg hover:bg-pauls-offwhite transition-colors shadow-lg">
-        Get a Quote
-      </a>
-    </div>
-  </section>
 </Base>

@@ -23,24 +23,23 @@ const toppings = [
   </section>
 
   <!-- How It Works -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-    <h2 class="text-3xl text-center mb-12">How It Works</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-5 gap-6 max-w-5xl mx-auto">
-      {[
-        { step: '1', title: 'Tell us about your event', desc: 'Fill in the quote form with your details' },
-        { step: '2', title: "We'll get back to you", desc: 'Confirm flavours, setup, and send a quote' },
-        { step: '3', title: 'We arrive early', desc: '30-minute pre-event setup at your venue' },
-        { step: '4', title: 'We serve your guests', desc: 'Full-service scooping team at your event' },
-        { step: '5', title: 'We clean up', desc: 'Pack down and leave your venue spotless' },
-      ].map(({ step, title, desc }) => (
-        <div class="text-center">
-          <div class="w-10 h-10 rounded-full bg-pauls-pink text-white font-bold flex items-center justify-center mx-auto mb-3">
-            {step}
+  <section class="bg-pauls-light-blue/40 py-16 md:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl md:text-4xl text-center mb-12">How It Works</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+        {[
+          { icon: '/home-assets/how-it-works/1-enquire.png', title: 'Enquire', desc: 'Fill in our quote form with your event details' },
+          { icon: '/home-assets/how-it-works/2-plan.png', title: 'We Plan', desc: 'We confirm flavours, setup type, and send a quote' },
+          { icon: '/home-assets/how-it-works/3-setup.png', title: 'We Show Up', desc: 'Full setup 30 minutes before your event' },
+          { icon: '/home-assets/how-it-works/4-celebrate.png', title: 'You Enjoy', desc: 'We serve, you celebrate — then we clean up' },
+        ].map(({ icon, title, desc }) => (
+          <div class="text-center">
+            <img src={icon} alt={title} width="141" height="141" loading="lazy" class="w-[123px] h-[123px] md:w-[141px] md:h-[141px] mx-auto mb-3" />
+            <h3 class="text-xl mb-1">{title}</h3>
+            <p class="text-sm text-pauls-dark-blue/60">{desc}</p>
           </div>
-          <h3 class="text-sm mb-1">{title}</h3>
-          <p class="text-xs text-pauls-dark-blue/60">{desc}</p>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   </section>
 
@@ -116,7 +115,7 @@ const toppings = [
           ))}
         </div>
         <div class="mt-8">
-          <h3 class="mb-2">Custom Branding</h3>
+          <h3 class="text-xl mb-2">Custom Branding</h3>
           <p class="text-sm text-pauls-dark-blue/60">{customBrandingCopy}</p>
         </div>
       </div>

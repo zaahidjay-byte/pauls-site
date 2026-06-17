@@ -3,12 +3,64 @@ import Base from '../layouts/Base.astro';
 import { CONTACT_EMAIL, CONTACT_PHONE_DISPLAY, CONTACT_PHONE_TEL, CONTACT_WHATSAPP, INSTAGRAM_URL, INSTAGRAM_HANDLE } from '../data/equipment';
 ---
 
-<Base title="Contact" description="Get in touch with Paul's Homemade Events in Johannesburg. Call or WhatsApp 061 407 3799, or request a quote online.">
+<Base title="Contact" description="Get in touch with Paul's Homemade Events in Johannesburg. Send us a message, call or WhatsApp 061 407 3799, or request a quote online.">
   <section class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
     <h1 class="text-4xl text-center mb-2">Scoop up a conversation</h1>
     <p class="text-center text-pauls-dark-blue/60 mb-16">We'd love to hear from you</p>
 
     <div class="space-y-10">
+      <!-- Get in Touch form -->
+      <div class="bg-white rounded-2xl p-8 shadow-sm">
+        <h2 class="text-xl mb-1">Get in Touch</h2>
+        <p class="text-sm text-pauls-dark-blue/60 mb-6">Fill in your details and we'll get back to you.</p>
+
+        <form id="contact-form" class="space-y-4" novalidate>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label for="c-name" class="block text-sm font-medium mb-1">Name *</label>
+              <input type="text" id="c-name" name="name" required maxlength="255" class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
+              <p class="field-error hidden text-sm text-red-600 mt-1" data-error-for="name"></p>
+            </div>
+            <div>
+              <label for="c-surname" class="block text-sm font-medium mb-1">Surname</label>
+              <input type="text" id="c-surname" name="surname" maxlength="255" class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
+            </div>
+            <div>
+              <label for="c-email" class="block text-sm font-medium mb-1">Email *</label>
+              <input type="email" id="c-email" name="email" required class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
+              <p class="field-error hidden text-sm text-red-600 mt-1" data-error-for="email"></p>
+            </div>
+            <div>
+              <label for="c-phone" class="block text-sm font-medium mb-1">Phone</label>
+              <input type="tel" id="c-phone" name="phone" maxlength="20" class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
+            </div>
+          </div>
+          <div>
+            <label for="c-message" class="block text-sm font-medium mb-1">Message *</label>
+            <textarea id="c-message" name="message" required rows="4" maxlength="5000" placeholder="How can we help? Tell us a little about what you're after..." class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none resize-y"></textarea>
+            <p class="field-error hidden text-sm text-red-600 mt-1" data-error-for="message"></p>
+          </div>
+
+          <!-- Honeypot — must stay empty -->
+          <div class="absolute -left-[9999px] top-auto w-px h-px overflow-hidden" aria-hidden="true">
+            <label for="c-website">Website</label>
+            <input type="text" id="c-website" name="website" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <p id="c-form-error" class="hidden text-center text-sm font-medium text-red-600"></p>
+
+          <button type="submit" id="c-submit" class="w-full bg-pauls-blue text-white py-3 rounded-full font-bold hover:bg-blue-700 transition-colors shadow disabled:opacity-60">
+            Send Message
+          </button>
+        </form>
+
+        <div id="c-success" class="hidden text-center py-8">
+          <div class="text-4xl mb-3">&#128233;</div>
+          <h3 class="text-xl mb-1">Thanks — your message is in.</h3>
+          <p class="text-pauls-dark-blue/60">We'll get back to you shortly.</p>
+        </div>
+      </div>
+
       <!-- Phone / WhatsApp -->
       <div class="bg-white rounded-2xl p-8 shadow-sm text-center">
         <h2 class="text-lg mb-2">Call or WhatsApp</h2>
@@ -28,7 +80,7 @@ import { CONTACT_EMAIL, CONTACT_PHONE_DISPLAY, CONTACT_PHONE_TEL, CONTACT_WHATSA
       <!-- Email -->
       <div class="bg-white rounded-2xl p-8 shadow-sm text-center">
         <h2 class="text-lg mb-2">Email Us</h2>
-        <a href={`mailto:${CONTACT_EMAIL}`} class="text-pauls-blue font-bold hover:underline">{CONTACT_EMAIL}</a>
+        <a href={`mailto:${CONTACT_EMAIL}`} class="text-2xl font-bold text-pauls-blue hover:underline break-words">{CONTACT_EMAIL}</a>
       </div>
 
       <!-- Instagram -->
@@ -58,3 +110,102 @@ import { CONTACT_EMAIL, CONTACT_PHONE_DISPLAY, CONTACT_PHONE_TEL, CONTACT_WHATSA
     </div>
   </section>
 </Base>
+
+<script>
+  const CONTACT_URL = 'https://admin.paulshomemade.co.za/contact';
+
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const success = document.getElementById('c-success');
+  const formError = document.getElementById('c-form-error') as HTMLParagraphElement;
+  const submitBtn = document.getElementById('c-submit') as HTMLButtonElement;
+
+  function clearErrors() {
+    formError.classList.add('hidden');
+    form.querySelectorAll('.field-error').forEach((el) => {
+      el.classList.add('hidden');
+      el.textContent = '';
+    });
+  }
+  function setFieldError(field: string, message: string) {
+    const el = form.querySelector(`[data-error-for="${field}"]`);
+    if (el) {
+      el.textContent = message;
+      el.classList.remove('hidden');
+    } else {
+      formError.textContent = message;
+      formError.classList.remove('hidden');
+    }
+  }
+  const val = (n: string) => {
+    const el = form.elements.namedItem(n) as HTMLInputElement | HTMLTextAreaElement | null;
+    return el ? el.value.trim() : '';
+  };
+  const orNull = (s: string) => (s === '' ? null : s);
+
+  function validate(): boolean {
+    let ok = true;
+    if (!val('name')) { setFieldError('name', 'Please tell us your name.'); ok = false; }
+    if (!val('email')) { setFieldError('email', 'We need your email so we can reply.'); ok = false; }
+    if (!val('message')) { setFieldError('message', 'Please add a short message.'); ok = false; }
+    return ok;
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearErrors();
+    if (!validate()) return;
+
+    const payload = {
+      name: val('name'),
+      surname: orNull(val('surname')),
+      email: val('email'),
+      phone: orNull(val('phone')),
+      message: val('message'),
+      website: val('website'), // honeypot
+    };
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+
+    try {
+      const res = await fetch(CONTACT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (res.status === 201) {
+        form.classList.add('hidden');
+        success?.classList.remove('hidden');
+        return;
+      }
+      if (res.status === 429) {
+        formError.textContent = "You've sent a few messages in a row — please try again in a little while.";
+        formError.classList.remove('hidden');
+        return;
+      }
+      if (res.status === 422) {
+        const body = await res.json().catch(() => null);
+        const errors = body?.detail;
+        if (Array.isArray(errors)) {
+          for (const err of errors) {
+            const field = Array.isArray(err.loc) ? String(err.loc[err.loc.length - 1]) : '';
+            setFieldError(field, err.msg || 'Please check this field.');
+          }
+        } else {
+          formError.textContent = 'Please check the highlighted fields and try again.';
+          formError.classList.remove('hidden');
+        }
+        return;
+      }
+      formError.textContent = 'Something went wrong sending your message. Please try again, or WhatsApp us on 061 407 3799.';
+      formError.classList.remove('hidden');
+    } catch {
+      formError.textContent = 'Something went wrong sending your message. Please try again, or WhatsApp us on 061 407 3799.';
+      formError.classList.remove('hidden');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send Message';
+    }
+  });
+</script>

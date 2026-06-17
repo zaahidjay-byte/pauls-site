@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <filter id="wob" x="-12%" y="-12%" width="124%" height="124%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.016" numOctaves="2" seed="4" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2.2"/>
+    </filter>
+  </defs>
+  <rect width="200" height="200" fill="#ffffff"/>
+
+  <g filter="url(#wob)" stroke="#1E2A78" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+    <!-- waffle cones (drawn first, holder covers their base) -->
+    <g>
+      <path d="M53 113 H83 L68 152 Z" fill="#A9C4F5"/>
+      <path d="M85 113 H115 L100 152 Z" fill="#A9C4F5"/>
+      <path d="M117 113 H147 L132 152 Z" fill="#A9C4F5"/>
+      <g stroke-width="2.5" stroke="#1E2A78" opacity="0.7">
+        <path d="M60 122 l16 0 M64 132 l9 0"/>
+        <path d="M92 122 l16 0 M96 132 l9 0"/>
+        <path d="M124 122 l16 0 M128 132 l9 0"/>
+      </g>
+    </g>
+    <!-- tasting holder plank -->
+    <rect x="40" y="126" width="120" height="26" rx="11" fill="#5B6FE0"/>
+    <!-- scoops -->
+    <circle cx="68" cy="100" r="19" fill="#F4A8D8"/>
+    <circle cx="100" cy="98" r="19" fill="#5B6FE0"/>
+    <circle cx="132" cy="100" r="19" fill="#A9C4F5"/>
+    <!-- pink check badge -->
+    <circle cx="150" cy="48" r="15" fill="#ffffff"/>
+    <path d="M143 49 l5 6 l10 -13" fill="none" stroke="#F4A8D8" stroke-width="5.5"/>
+  </g>
+
+  <!-- sprinkles on scoops (crisp dots/segments) -->
+  <g stroke-linecap="round" stroke-width="3.5">
+    <path d="M62 96 l5 -2" stroke="#ffffff"/>
+    <path d="M73 104 l4 3" stroke="#1E2A78"/>
+    <path d="M126 95 l5 -2" stroke="#ffffff"/>
+    <path d="M137 104 l4 3" stroke="#5B6FE0"/>
+  </g>
+
+  <!-- face on middle scoop -->
+  <g>
+    <circle cx="88" cy="102" r="5.5" fill="#F4A8D8"/>
+    <circle cx="112" cy="102" r="5.5" fill="#F4A8D8"/>
+    <circle cx="94" cy="95" r="3.2" fill="#1E2A78"/>
+    <circle cx="106" cy="95" r="3.2" fill="#1E2A78"/>
+    <path d="M94 102 Q100 109 106 102" fill="none" stroke="#1E2A78" stroke-width="3.6" stroke-linecap="round"/>
+  </g>
+
+  <!-- ambient sprinkles -->
+  <g stroke-linecap="round" stroke-width="4.5">
+    <path d="M28 86 l8 3" stroke="#5B6FE0"/>
+    <path d="M34 150 l-3 9" stroke="#F4A8D8"/>
+    <path d="M176 96 l-7 3" stroke="#A9C4F5"/>
+    <path d="M168 168 l5 7" stroke="#5B6FE0"/>
+  </g>
+</svg>

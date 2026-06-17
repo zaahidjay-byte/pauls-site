@@ -1,80 +1,22 @@
 ---
-const navLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/flavours', label: 'Flavours' },
-  { href: '/events', label: 'Events' },
-  { href: '/story', label: 'Our Story' },
-  { href: '/contact', label: 'Contact' },
-];
-const currentPath = Astro.url.pathname;
+// Shared Webflow navbar (cloned from the flavours page) used site-wide.
+// Raw HTML partial is injected verbatim so the Webflow markup/SVG is untouched.
+import navbarRaw from '../partials/navbar.html?raw';
+
+// Highlight the link matching the current route (Webflow's w--current state).
+// Hrefs are trailing-slash to match Webflow's runtime current-link detection.
+let path = Astro.url.pathname;
+if (path !== '/' && !path.endsWith('/')) path += '/';
+const escaped = path.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+let nav = navbarRaw
+  .replace(/ aria-current="page"/g, '')
+  .replace(/ w--current/g, '');
+
+nav = nav.replace(
+  new RegExp(`(<a href="${escaped}" )class="header-links w-nav-link"`),
+  '$1aria-current="page" class="header-links w-nav-link w--current"',
+);
 ---
 
-<header class="bg-white/90 backdrop-blur-sm sticky top-0 z-40 shadow-sm">
-  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
-    <a href="/" class="flex items-center gap-2">
-      <img src="/logo-badge.webp" alt="Paul's Homemade" class="h-10 w-10 rounded-full" />
-      <span class="font-bold text-pauls-dark-blue text-lg hidden sm:inline">Paul's Homemade</span>
-    </a>
-
-    <!-- Desktop nav -->
-    <ul class="hidden md:flex items-center gap-6">
-      {navLinks.map(({ href, label }) => (
-        <li>
-          <a
-            href={href}
-            class:list={[
-              'text-sm font-medium transition-colors hover:text-pauls-blue',
-              currentPath === href || (href !== '/' && currentPath.startsWith(href))
-                ? 'text-pauls-blue'
-                : 'text-pauls-dark-blue/70',
-            ]}
-          >
-            {label}
-          </a>
-        </li>
-      ))}
-      <li>
-        <a href="/book" class="bg-pauls-blue text-white px-5 py-2 rounded-full text-sm font-bold hover:bg-blue-700 transition-colors">
-          Book Now
-        </a>
-      </li>
-    </ul>
-
-    <!-- Mobile hamburger -->
-    <button id="mobile-menu-btn" class="md:hidden p-2" aria-label="Open menu">
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-      </svg>
-    </button>
-  </nav>
-
-  <!-- Mobile menu -->
-  <div id="mobile-menu" class="md:hidden hidden bg-white border-t">
-    <ul class="px-4 py-4 space-y-3">
-      {navLinks.map(({ href, label }) => (
-        <li>
-          <a
-            href={href}
-            class:list={[
-              'block text-base font-medium py-1',
-              currentPath === href ? 'text-pauls-blue' : 'text-pauls-dark-blue/70',
-            ]}
-          >
-            {label}
-          </a>
-        </li>
-      ))}
-      <li>
-        <a href="/book" class="block bg-pauls-blue text-white text-center px-5 py-2.5 rounded-full font-bold mt-2">
-          Book Now
-        </a>
-      </li>
-    </ul>
-  </div>
-</header>
-
-<script>
-  const btn = document.getElementById('mobile-menu-btn');
-  const menu = document.getElementById('mobile-menu');
-  btn?.addEventListener('click', () => menu?.classList.toggle('hidden'));
-</script>
+<Fragment set:html={nav} />

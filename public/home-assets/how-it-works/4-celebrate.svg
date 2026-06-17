@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <filter id="wob" x="-12%" y="-12%" width="124%" height="124%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.016" numOctaves="2" seed="4" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2.2"/>
+    </filter>
+  </defs>
+  <rect width="200" height="200" fill="#ffffff"/>
+
+  <g filter="url(#wob)" stroke="#1E2A78" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+    <!-- glass: base, stem, bowl, rim -->
+    <ellipse cx="100" cy="172" rx="22" ry="6" fill="#A9C4F5"/>
+    <rect x="95" y="150" width="10" height="20" rx="2" fill="#A9C4F5"/>
+    <path d="M56 108 Q60 152 100 162 Q140 152 144 108 Z" fill="#A9C4F5"/>
+    <ellipse cx="100" cy="107" rx="44" ry="9" fill="#ffffff"/>
+    <!-- scoops -->
+    <circle cx="80" cy="92" r="17" fill="#F4A8D8"/>
+    <circle cx="120" cy="92" r="17" fill="#5B6FE0"/>
+    <circle cx="100" cy="76" r="16" fill="#ffffff"/>
+    <!-- cherry -->
+    <path d="M100 60 Q105 49 113 47" fill="none"/>
+    <circle cx="99" cy="62" r="8" fill="#F4A8D8"/>
+  </g>
+
+  <!-- face on the glass -->
+  <g>
+    <circle cx="82" cy="134" r="6.5" fill="#F4A8D8"/>
+    <circle cx="118" cy="134" r="6.5" fill="#F4A8D8"/>
+    <circle cx="91" cy="127" r="3.4" fill="#1E2A78"/>
+    <circle cx="109" cy="127" r="3.4" fill="#1E2A78"/>
+    <path d="M91 135 Q100 143 109 135" fill="none" stroke="#1E2A78" stroke-width="4" stroke-linecap="round"/>
+  </g>
+
+  <!-- sparkles -->
+  <g fill="none" stroke="#1E2A78" stroke-width="3">
+    <path d="M44 66 C44 73 44 73 51 73 C44 73 44 73 44 80 C44 73 44 73 37 73 C44 73 44 73 44 66 Z" fill="#F4A8D8"/>
+    <path d="M158 70 C158 77 158 77 165 77 C158 77 158 77 158 84 C158 77 158 77 151 77 C158 77 158 77 158 70 Z" fill="#5B6FE0"/>
+    <path d="M150 140 C150 146 150 146 156 146 C150 146 150 146 150 152 C150 146 150 146 144 146 C150 146 150 146 150 140 Z" fill="#A9C4F5"/>
+    <path d="M40 138 C40 144 40 144 46 144 C40 144 40 144 40 150 C40 144 40 144 34 144 C40 144 40 144 40 138 Z" fill="#F4A8D8"/>
+  </g>
+
+  <!-- sprinkles on scoops -->
+  <g stroke-linecap="round" stroke-width="3.2">
+    <path d="M75 88 l5 -2" stroke="#1E2A78"/>
+    <path d="M116 90 l5 -2" stroke="#ffffff"/>
+    <path d="M97 72 l5 0" stroke="#F4A8D8"/>
+  </g>
+</svg>
