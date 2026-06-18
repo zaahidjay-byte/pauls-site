@@ -1,0 +1,50 @@
+---
+// Animated "How It Works" steps. Each icon is a self-contained animation
+// (authored at 720x720) embedded as an iframe and scaled to the icon box.
+// The whole tile links to /book/. Shared by the home and events pages.
+const steps = [
+  { anim: '/home-assets/how-it-works/anim/1-enquire.html', title: 'Enquire', desc: 'Fill in our quote form with your event details' },
+  { anim: '/home-assets/how-it-works/anim/2-plan.html', title: 'We Plan', desc: 'We confirm flavours, setup type, and send a quote' },
+  { anim: '/home-assets/how-it-works/anim/3-setup.html', size: 'xl', title: 'We Show Up', desc: 'Full setup 30 minutes before your event' },
+  { anim: '/home-assets/how-it-works/anim/4-celebrate.html', size: 'lg', title: 'You Enjoy', desc: 'We serve, you celebrate — then we clean up' },
+];
+---
+
+<style is:global>
+  /* Animated step icons are authored at 720x720; render at that size and
+     scale down to the icon box (square, so width==height). */
+  .hiw-anim { position: relative; overflow: hidden; border-radius: 16px; cursor: pointer; }
+  .hiw-anim iframe {
+    position: absolute; top: 50%; left: 50%; width: 720px; height: 720px;
+    border: 0; transform-origin: center; pointer-events: none; /* clicks fall through to the link */
+    transform: translate(-50%, -50%) scale(0.17083); /* 123 / 720 */
+  }
+  @media (min-width: 768px) {
+    .hiw-anim iframe { transform: translate(-50%, -50%) scale(0.19583); } /* 141 / 720 */
+  }
+  /* Larger icons — content grows from centre, overflows its box */
+  .hiw-anim--lg, .hiw-anim--xl { overflow: visible; }
+  .hiw-anim--lg iframe { transform: translate(-50%, -50%) scale(0.22208); } /* x1.3 */
+  .hiw-anim--xl iframe { transform: translate(-50%, -50%) scale(0.31091); } /* x1.82 */
+  @media (min-width: 768px) {
+    .hiw-anim--lg iframe { transform: translate(-50%, -50%) scale(0.25458); } /* x1.3 */
+    .hiw-anim--xl iframe { transform: translate(-50%, -50%) scale(0.35641); } /* x1.82 */
+  }
+</style>
+
+<section class="bg-pauls-light-blue/40 py-16 md:py-24">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 class="text-3xl md:text-4xl text-center mb-12">How It Works</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+      {steps.map(({ anim, size, title, desc }) => (
+        <a href="/book/" class="text-center block group">
+          <div class:list={["hiw-anim block w-[123px] h-[123px] md:w-[141px] md:h-[141px] mx-auto mb-3", { "hiw-anim--lg": size === 'lg', "hiw-anim--xl": size === 'xl' }]}>
+            <iframe src={anim} title={title} loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
+          </div>
+          <h3 class="text-xl mb-1 group-hover:text-pauls-blue transition-colors">{title}</h3>
+          <p class="text-sm text-pauls-dark-blue/60">{desc}</p>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
