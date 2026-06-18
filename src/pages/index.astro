@@ -52,21 +52,48 @@ import homeSections from '../partials/home-sections.html?raw';
   </section>
 
   <!-- How It Works -->
+  <style is:global>
+    /* Animated step icons are authored at 720x720; render at that size and
+       scale down to the icon box. Box is square so width==height. */
+    .hiw-anim { position: relative; overflow: hidden; border-radius: 16px; cursor: pointer; }
+    .hiw-anim iframe {
+      position: absolute; top: 50%; left: 50%; width: 720px; height: 720px;
+      border: 0; transform-origin: center; pointer-events: none; /* clicks fall through to the link */
+      transform: translate(-50%, -50%) scale(0.17083); /* 123 / 720 */
+    }
+    @media (min-width: 768px) {
+      .hiw-anim iframe { transform: translate(-50%, -50%) scale(0.19583); } /* 141 / 720 */
+    }
+    /* Larger icons — content grows from centre, overflows its box */
+    .hiw-anim--lg, .hiw-anim--lg40 { overflow: visible; }
+    .hiw-anim--lg iframe { transform: translate(-50%, -50%) scale(0.22208); } /* x1.3 */
+    .hiw-anim--lg40 iframe { transform: translate(-50%, -50%) scale(0.23916); } /* x1.4 */
+    @media (min-width: 768px) {
+      .hiw-anim--lg iframe { transform: translate(-50%, -50%) scale(0.25458); } /* x1.3 */
+      .hiw-anim--lg40 iframe { transform: translate(-50%, -50%) scale(0.27417); } /* x1.4 */
+    }
+  </style>
   <section class="bg-pauls-light-blue/40 py-16 md:py-24">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <h2 class="text-3xl md:text-4xl text-center mb-12">How It Works</h2>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
         {[
-          { icon: '/home-assets/how-it-works/1-enquire.png?v=2', title: 'Enquire', desc: 'Fill in our quote form with your event details' },
-          { icon: '/home-assets/how-it-works/2-plan.png', title: 'We Plan', desc: 'We confirm flavours, setup type, and send a quote' },
-          { icon: '/home-assets/how-it-works/3-setup.png', title: 'We Show Up', desc: 'Full setup 30 minutes before your event' },
-          { icon: '/home-assets/how-it-works/4-celebrate.png', title: 'You Enjoy', desc: 'We serve, you celebrate — then we clean up' },
-        ].map(({ icon, title, desc }) => (
-          <div class="text-center">
-            <img src={icon} alt={title} width="141" height="141" loading="lazy" class="w-[123px] h-[123px] md:w-[141px] md:h-[141px] mx-auto mb-3" />
-            <h3 class="text-xl mb-1">{title}</h3>
+          { anim: '/home-assets/how-it-works/anim/1-enquire.html', icon: '/home-assets/how-it-works/1-enquire.png?v=2', title: 'Enquire', desc: 'Fill in our quote form with your event details' },
+          { anim: '/home-assets/how-it-works/anim/2-plan.html', icon: '/home-assets/how-it-works/2-plan.png', title: 'We Plan', desc: 'We confirm flavours, setup type, and send a quote' },
+          { anim: '/home-assets/how-it-works/anim/3-setup.html', big40: true, icon: '/home-assets/how-it-works/3-setup.png', title: 'We Show Up', desc: 'Full setup 30 minutes before your event' },
+          { anim: '/home-assets/how-it-works/anim/4-celebrate.html', big: true, icon: '/home-assets/how-it-works/4-celebrate.png', title: 'You Enjoy', desc: 'We serve, you celebrate — then we clean up' },
+        ].map(({ anim, big, big40, icon, title, desc }) => (
+          <a href="/book/" class="text-center block group">
+            {anim ? (
+              <div class:list={["hiw-anim block w-[123px] h-[123px] md:w-[141px] md:h-[141px] mx-auto mb-3", { "hiw-anim--lg": big, "hiw-anim--lg40": big40 }]}>
+                <iframe src={anim} title={title} loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
+              </div>
+            ) : (
+              <img src={icon} alt={title} width="141" height="141" loading="lazy" class="w-[123px] h-[123px] md:w-[141px] md:h-[141px] mx-auto mb-3" />
+            )}
+            <h3 class="text-xl mb-1 group-hover:text-pauls-blue transition-colors">{title}</h3>
             <p class="text-sm text-pauls-dark-blue/60">{desc}</p>
-          </div>
+          </a>
         ))}
       </div>
     </div>
