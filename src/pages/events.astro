@@ -34,12 +34,19 @@ const toppings = [
       <p class="eyebrow">Equipment</p>
       <h2 class="text-3xl text-center mb-12">Our Setups</h2>
       <div class="space-y-10">
-        {equipment.map(({ slug, name, tagline, blurb, specs, ideal, icon }) => (
+        {equipment.map(({ slug, name, tagline, blurb, specs, ideal, icon, photo, photoAvif }) => (
           <article id={slug} class="bg-white rounded-2xl shadow-sm overflow-hidden md:flex scroll-mt-24">
-            <!-- Photo slot — human will drop event photography into src/assets/photos/ -->
-            <div class="md:w-2/5 bg-gradient-to-br from-pauls-blue to-pauls-dark-blue flex items-center justify-center text-7xl py-16 md:py-0">
-              {icon}
-            </div>
+            {photo ? (
+              <picture class="md:w-2/5 block">
+                {photoAvif && <source srcset={photoAvif} type="image/avif" />}
+                <img src={photo} alt={`Paul's Homemade ${name} setup`} loading="lazy" class="w-full h-56 md:h-full object-cover" />
+              </picture>
+            ) : (
+              <!-- Photo slot — human will drop event photography into src/assets/photos/ -->
+              <div class="md:w-2/5 bg-gradient-to-br from-pauls-blue to-pauls-dark-blue flex items-center justify-center text-7xl py-16 md:py-0">
+                {icon}
+              </div>
+            )}
             <div class="p-8 md:w-3/5 flex flex-col">
               <h3 class="text-2xl text-pauls-dark-blue mb-1">{name}</h3>
               {tagline && <p class="text-sm font-bold text-pauls-pink mb-3">{tagline}</p>}

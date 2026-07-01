@@ -10,6 +10,9 @@ export interface Equipment {
   /** show the bains stepper when this setup is selected on /book */
   needsBains?: boolean;
   icon: string;
+  /** optional hero photo for the setup card (falls back to icon) */
+  photo?: string;
+  photoAvif?: string;
 }
 
 export const equipment: Equipment[] = [
@@ -22,6 +25,8 @@ export const equipment: Equipment[] = [
     ideal: "kids' parties, school and sports days, outdoor gatherings, and corporate functions",
     needsUnits: true,
     icon: '🚲',
+    photo: '/home-assets/phicycle.jpg',
+    photoAvif: '/home-assets/phicycle.avif',
   },
   {
     slug: 'scooping-freezer',
@@ -33,6 +38,8 @@ export const equipment: Equipment[] = [
     ideal: 'weddings, corporate events, bar/bat mitzvahs, and large celebrations',
     needsBains: true,
     icon: '🍨',
+    photo: '/home-assets/scooping-freezer.jpg',
+    photoAvif: '/home-assets/scooping-freezer.avif',
   },
   {
     slug: 'scooping-cart',
@@ -43,6 +50,8 @@ export const equipment: Equipment[] = [
     ideal: 'weddings, festivals, brand activations, and celebrations',
     needsBains: true,
     icon: '🛒',
+    photo: '/home-assets/scooping-cart.jpg',
+    photoAvif: '/home-assets/scooping-cart.avif',
   },
   {
     slug: 'tuk-tuk',
@@ -54,6 +63,8 @@ export const equipment: Equipment[] = [
     needsBains: true,
     needsUnits: true,
     icon: '🛺',
+    photo: '/home-assets/tuk-tuk.jpg',
+    photoAvif: '/home-assets/tuk-tuk.avif',
   },
   {
     slug: 'countertop-freezer',
@@ -64,6 +75,8 @@ export const equipment: Equipment[] = [
     ideal: 'small private events, office functions, and intimate celebrations',
     needsUnits: true,
     icon: '🧊',
+    photo: '/home-assets/countertop-freezer.jpg',
+    photoAvif: '/home-assets/countertop-freezer.avif',
   },
 ];
 
