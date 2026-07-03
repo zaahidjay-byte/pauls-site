@@ -18,6 +18,14 @@ const eventTypes = [
 ];
 
 const venueTypes = ['Indoor', 'Outdoor', 'Both'];
+
+// 30-minute time slots (00:00–23:30). A <select> guarantees 30-min-only
+// selection on every device — native time inputs ignore `step` on mobile.
+const timeSlots = Array.from({ length: 48 }, (_, i) => {
+  const h = String(Math.floor(i / 2)).padStart(2, '0');
+  const m = i % 2 === 0 ? '00' : '30';
+  return `${h}:${m}`;
+});
 ---
 
 <Base title="Get a Quote" description="Request a quote from Paul's Homemade Events. Tell us about your event and we'll send your formal quote.">
@@ -74,11 +82,17 @@ const venueTypes = ['Indoor', 'Outdoor', 'Both'];
           </div>
           <div>
             <label for="start-time" class="block text-sm font-medium mb-1">Start Time</label>
-            <input type="time" id="start-time" name="start_time" step={1800} class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
+            <select id="start-time" name="start_time" class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none">
+              <option value="">--</option>
+              {timeSlots.map((t) => <option value={t}>{t}</option>)}
+            </select>
           </div>
           <div>
             <label for="end-time" class="block text-sm font-medium mb-1">End Time</label>
-            <input type="time" id="end-time" name="end_time" step={1800} class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
+            <select id="end-time" name="end_time" class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none">
+              <option value="">--</option>
+              {timeSlots.map((t) => <option value={t}>{t}</option>)}
+            </select>
           </div>
           <div>
             <label for="headcount" class="block text-sm font-medium mb-1">Number of Guests</label>
