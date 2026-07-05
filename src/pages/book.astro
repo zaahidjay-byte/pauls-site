@@ -162,7 +162,7 @@ const timeSlots = Array.from({ length: 48 }, (_, i) => {
             <label class="block text-sm font-medium mb-1">Mini-pint units</label>
             <div class="space-y-2">
               <div>
-                <label for="units_normal" class="block text-xs text-pauls-dark-blue/60 mb-1">Regular servings</label>
+                <label for="units_normal" class="block text-xs text-pauls-dark-blue/60 mb-1">Regular Units</label>
                 <div class="flex items-center gap-2">
                   <button type="button" data-step="units_normal" data-dir="-1" class="w-10 h-10 rounded-lg border border-gray-300 font-bold text-lg hover:bg-gray-50" aria-label="Fewer regular units">&minus;</button>
                   <input type="number" id="units_normal" name="units_normal" min="0" max="10000" inputmode="numeric" class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-center focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
@@ -170,7 +170,7 @@ const timeSlots = Array.from({ length: 48 }, (_, i) => {
                 </div>
               </div>
               <div>
-                <label for="units_vegan" class="block text-xs text-pauls-dark-blue/60 mb-1">Vegan servings</label>
+                <label for="units_vegan" class="block text-xs text-pauls-dark-blue/60 mb-1">Vegan Units</label>
                 <div class="flex items-center gap-2">
                   <button type="button" data-step="units_vegan" data-dir="-1" class="w-10 h-10 rounded-lg border border-gray-300 font-bold text-lg hover:bg-gray-50" aria-label="Fewer vegan units">&minus;</button>
                   <input type="number" id="units_vegan" name="units_vegan" min="0" max="10000" inputmode="numeric" class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-center focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
