@@ -159,11 +159,24 @@ const timeSlots = Array.from({ length: 48 }, (_, i) => {
         <!-- Conditional steppers -->
         <div class="grid sm:grid-cols-2 gap-4 mt-4">
           <div id="units-wrap" class="hidden">
-            <label for="units" class="block text-sm font-medium mb-1">Mini-pint units</label>
-            <div class="flex items-center gap-2">
-              <button type="button" data-step="units" data-dir="-1" class="w-10 h-10 rounded-lg border border-gray-300 font-bold text-lg hover:bg-gray-50" aria-label="Fewer units">&minus;</button>
-              <input type="number" id="units" name="units" min="0" max="10000" inputmode="numeric" class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-center focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
-              <button type="button" data-step="units" data-dir="1" class="w-10 h-10 rounded-lg border border-gray-300 font-bold text-lg hover:bg-gray-50" aria-label="More units">+</button>
+            <label class="block text-sm font-medium mb-1">Mini-pint units</label>
+            <div class="space-y-2">
+              <div>
+                <label for="units_normal" class="block text-xs text-pauls-dark-blue/60 mb-1">Regular servings</label>
+                <div class="flex items-center gap-2">
+                  <button type="button" data-step="units_normal" data-dir="-1" class="w-10 h-10 rounded-lg border border-gray-300 font-bold text-lg hover:bg-gray-50" aria-label="Fewer regular units">&minus;</button>
+                  <input type="number" id="units_normal" name="units_normal" min="0" max="10000" inputmode="numeric" class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-center focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
+                  <button type="button" data-step="units_normal" data-dir="1" class="w-10 h-10 rounded-lg border border-gray-300 font-bold text-lg hover:bg-gray-50" aria-label="More regular units">+</button>
+                </div>
+              </div>
+              <div>
+                <label for="units_vegan" class="block text-xs text-pauls-dark-blue/60 mb-1">Vegan servings</label>
+                <div class="flex items-center gap-2">
+                  <button type="button" data-step="units_vegan" data-dir="-1" class="w-10 h-10 rounded-lg border border-gray-300 font-bold text-lg hover:bg-gray-50" aria-label="Fewer vegan units">&minus;</button>
+                  <input type="number" id="units_vegan" name="units_vegan" min="0" max="10000" inputmode="numeric" class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-center focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
+                  <button type="button" data-step="units_vegan" data-dir="1" class="w-10 h-10 rounded-lg border border-gray-300 font-bold text-lg hover:bg-gray-50" aria-label="More vegan units">+</button>
+                </div>
+              </div>
             </div>
             <p id="units-hint" class="text-xs text-pauls-dark-blue/50 mt-1">Minimum order: 40 units.</p>
             <p class="field-error hidden text-sm text-red-600 mt-1" data-error-for="units"></p>
@@ -243,7 +256,8 @@ const timeSlots = Array.from({ length: 48 }, (_, i) => {
   const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
   const unitsWrap = document.getElementById('units-wrap')!;
   const bainsWrap = document.getElementById('bains-wrap')!;
-  const unitsInput = document.getElementById('units') as HTMLInputElement;
+  const unitsNormalInput = document.getElementById('units_normal') as HTMLInputElement;
+  const unitsVeganInput = document.getElementById('units_vegan') as HTMLInputElement;
   const bainsInput = document.getElementById('bains') as HTMLInputElement;
   const unitsHint = document.getElementById('units-hint')!;
 
@@ -265,12 +279,14 @@ const timeSlots = Array.from({ length: 48 }, (_, i) => {
     bainsWrap.classList.toggle('hidden', !showBains);
     if (showUnits) {
       const min = unitsMin();
-      unitsInput.min = String(min);
-      unitsHint.textContent = `Minimum order: ${min} units.`;
+      // Minimum applies to the combined total (regular + vegan); both fields
+      // stay blank/optional — the operator catches an under-min split. No
+      // auto-prefill: pre-filling one field would misrepresent the split.
+      unitsHint.textContent = `Minimum order: ${min} units (regular + vegan combined).`;
       unitsHint.classList.toggle('hidden', min <= 1);
-      if (!unitsInput.value && min > 1) unitsInput.value = String(min);
     } else {
-      unitsInput.value = '';
+      unitsNormalInput.value = '';
+      unitsVeganInput.value = '';
     }
     if (showBains) {
       bainsInput.min = String(BAINS_MIN);
@@ -281,11 +297,14 @@ const timeSlots = Array.from({ length: 48 }, (_, i) => {
   }
   equipmentBoxes.forEach((b) => b.addEventListener('change', refreshSteppers));
 
-  // stepper +/- buttons
+  // stepper +/- buttons — data-step carries the target input id
   form.querySelectorAll<HTMLButtonElement>('button[data-step]').forEach((btn) => {
     btn.addEventListener('click', () => {
-      const input = btn.dataset.step === 'units' ? unitsInput : bainsInput;
-      const min = btn.dataset.step === 'units' ? unitsMin() : BAINS_MIN;
+      const input = document.getElementById(btn.dataset.step!) as HTMLInputElement;
+      if (!input) return;
+      // Units floor at 0 per-field (the min is enforced on the combined total);
+      // bains keeps its own minimum.
+      const min = btn.dataset.step === 'bains' ? BAINS_MIN : 0;
       const max = Number(input.max || 10000);
       const cur = Number(input.value || 0);
       const next = cur + Number(btn.dataset.dir);
@@ -346,10 +365,12 @@ const timeSlots = Array.from({ length: 48 }, (_, i) => {
     }
     if (!eventDate) { setFieldError('event_date', 'Please pick your event date.'); ok = false; }
 
-    if (!unitsWrap.classList.contains('hidden') && unitsInput.value) {
+    if (!unitsWrap.classList.contains('hidden')) {
+      const total = Number(unitsNormalInput.value || 0) + Number(unitsVeganInput.value || 0);
       const min = unitsMin();
-      if (min > 1 && Number(unitsInput.value) < min) {
-        setFieldError('units', `Your selected setups have a minimum order of ${min} units.`);
+      // Only validate when the customer entered something; blank stays valid.
+      if (total > 0 && min > 1 && total < min) {
+        setFieldError('units', `Your selected setups have a minimum order of ${min} units (regular + vegan combined).`);
         ok = false;
       }
     }
@@ -387,7 +408,8 @@ const timeSlots = Array.from({ length: 48 }, (_, i) => {
       venue_type: orNull(val('venue_type')),
       address: orNull(val('address')),
       equipment: equipmentBoxes.filter((b) => b.checked).map((b) => b.value),
-      units: unitsWrap.classList.contains('hidden') ? null : intOrNull(unitsInput.value),
+      units_normal: unitsWrap.classList.contains('hidden') ? null : intOrNull(unitsNormalInput.value),
+      units_vegan: unitsWrap.classList.contains('hidden') ? null : intOrNull(unitsVeganInput.value),
       bains: bainsWrap.classList.contains('hidden') ? null : intOrNull(bainsInput.value),
       custom_branding: brandingToggle.checked ? orNull(brandingText.value.trim()) || 'Interested — details to follow' : null,
       special_requests: orNull(val('special_requests')),
