@@ -190,6 +190,8 @@ import homeSections from '../partials/home-sections.html?raw';
         document.querySelectorAll('.splide__slide--clone').forEach(function (clone) {
           clone.querySelectorAll(FOCUSABLE).forEach(function (el) { el.setAttribute('tabindex', '-1'); });
         });
+        // a refresh closes every card (above): restart the carousel if a card had paused it
+        if (!document.querySelector('#flavour-carousel .flavour-card.is-open')) autoScroll(true);
       }
       setup();
       if (window.paulsCarousels) {
