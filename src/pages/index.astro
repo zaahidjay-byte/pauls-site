@@ -8,10 +8,13 @@ import { equipment } from '../data/equipment';
 import homeSections from '../partials/home-sections.html?raw';
 ---
 
-<Base title="Home">
+<Base>
   <!-- Hero -->
   <section class="relative bg-pauls-blue text-white overflow-hidden">
-    <img src="/home-assets/home-hero.jpg" alt="Paul's Homemade ice cream tuk-tuk staffed and ready to serve at an event" width="1920" height="1384" class="absolute inset-0 w-full h-full object-cover" />
+    <picture>
+      <source srcset="/home-assets/home-hero.webp" type="image/webp" />
+      <img src="/home-assets/home-hero.jpg" alt="Paul's Homemade ice cream tuk-tuk staffed and ready to serve at an event" width="1920" height="1384" class="absolute inset-0 w-full h-full object-cover" />
+    </picture>
     <div class="absolute inset-0 bg-gradient-to-br from-pauls-blue/85 via-pauls-dark-blue/75 to-pauls-blue/85"></div>
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-36 text-center">
       <h1 class="text-4xl md:text-6xl leading-tight mb-4 !text-white [text-shadow:0_2px_12px_rgb(0_0_0_/_55%)]">
@@ -35,19 +38,19 @@ import homeSections from '../partials/home-sections.html?raw';
   <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
     <p class="eyebrow">Equipment</p>
     <h2 class="text-3xl md:text-4xl text-center mb-4">What We Do</h2>
-    <p class="text-center text-pauls-dark-blue/60 mb-12 max-w-xl mx-auto">Five ways to bring Paul's to your event</p>
+    <p class="text-center text-pauls-dark-blue/75 mb-12 max-w-xl mx-auto">Five ways to bring Paul's to your event</p>
 
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
       {equipment.map(({ slug, name, blurb, icon }) => (
         <a href={`/events#${slug}`} class="group bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow text-center">
           <div class="text-4xl mb-4">{icon}</div>
           <h3 class="text-xl mb-2 group-hover:text-pauls-blue transition-colors">{name}</h3>
-          <p class="text-pauls-dark-blue/60 text-sm line-clamp-3">{blurb}</p>
+          <p class="text-pauls-dark-blue/75 text-sm">{blurb}</p>
         </a>
       ))}
       <a href="/book" class="group bg-pauls-blue text-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow text-center flex flex-col items-center justify-center">
         <div class="text-4xl mb-4">📝</div>
-        <h3 class="text-xl mb-2">Not sure which?</h3>
+        <h3 class="text-xl mb-2 !text-white">Not sure which?</h3>
         <p class="text-white/80 text-sm">Tell us about your event and we'll recommend the right setup in your quote.</p>
       </a>
     </div>
@@ -57,14 +60,16 @@ import homeSections from '../partials/home-sections.html?raw';
   <HowItWorks />
 
   <!-- ===== Cloned .com homepage sections: Seriously good fun → carousel → difference → booking → reviews ===== -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@3.2.2/dist/css/splide-core.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide-core.min.css" integrity="sha384-UUMoBPww5zPuXpRJLHFTN+9x39lTnFOA9kj9q4HOVqv+aZH6G7jZwnXkrE5c18lX" crossorigin="anonymous" />
   <Fragment set:html={homeSections} />
 
-  <!-- Splide carousel runtime + init (verbatim from the .com homepage) -->
-  <script is:inline src="https://cdn.jsdelivr.net/npm/@splidejs/splide@3.2.2/dist/js/splide.min.js"></script>
-  <script is:inline src="https://cdn.jsdelivr.net/npm/@splidejs/splide-extension-auto-scroll@0.5.3/dist/js/splide-extension-auto-scroll.min.js"></script>
+  <!-- Splide carousel runtime + init. Exact versions pinned: the auto-scroll
+       extension 0.5.x needs Splide 4 (with Splide 3.2.2 it threw on every load). -->
+  <script is:inline src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js" integrity="sha384-RbYB5yr9jD1p+2OHlV3KzOBLAY48CbFsJ87bXEFYINGgOlQJNE4cEjTUf+Q2fygb" crossorigin="anonymous"></script>
+  <script is:inline src="https://cdn.jsdelivr.net/npm/@splidejs/splide-extension-auto-scroll@0.5.3/dist/js/splide-extension-auto-scroll.min.js" integrity="sha384-10Fh7FCq6vJI5Wuf0wv6nj9zcFJhfBWOYq8t0LXil6xFLu3GAviHPJhZPXAPl463" crossorigin="anonymous"></script>
   <script is:inline>
     document.addEventListener('DOMContentLoaded', function () {
+      if (!window.Splide || !window.splide || !window.splide.Extensions) return;
       var splideElements = document.querySelectorAll('.splide');
       for (var i = 0; i < splideElements.length; i++) {
         new Splide(splideElements[i], {
@@ -75,7 +80,7 @@ import homeSections from '../partials/home-sections.html?raw';
           arrows: false,
           pagination: false,
           label: 'Image Slider',
-          reduceMotion: { speed: 0, rewindSpeed: 0, autoplay: 'pause' },
+          reducedMotion: { speed: 0, rewindSpeed: 0, autoplay: 'pause' },
           autoScroll: { speed: 0.6, pauseOnHover: false, pauseOnFocus: false },
           breakpoints: {
             991: { autoScroll: { speed: 0.6, pauseOnHover: false, pauseOnFocus: false } },

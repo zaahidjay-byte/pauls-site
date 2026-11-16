@@ -31,7 +31,7 @@ const timeSlots = Array.from({ length: 48 }, (_, i) => {
 <Base title="Get a Quote" description="Request a quote from Paul's Homemade Events. Tell us about your event and we'll send your formal quote.">
   <section class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
     <h1 class="text-4xl text-center mb-2">Get a Quote</h1>
-    <p class="text-center text-pauls-dark-blue/60 mb-12">
+    <p class="text-center text-pauls-dark-blue/75 mb-12">
       Fill in the details below and we'll send your formal quote.
     </p>
 
@@ -58,7 +58,7 @@ const timeSlots = Array.from({ length: 48 }, (_, i) => {
             <input type="tel" id="phone" name="phone" maxlength="20" class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
             <p class="field-error hidden text-sm text-red-600 mt-1" data-error-for="phone"></p>
           </div>
-          <p class="sm:col-span-2 text-xs text-pauls-dark-blue/50 -mt-2">We'll send your quote to your email. Phone is optional — it just helps us reach you faster.</p>
+          <p class="sm:col-span-2 text-xs text-pauls-dark-blue/75 -mt-2">We'll send your quote to your email. Phone is optional — it just helps us reach you faster.</p>
         </div>
       </fieldset>
 
@@ -123,7 +123,7 @@ const timeSlots = Array.from({ length: 48 }, (_, i) => {
           <div class="sm:col-span-2">
             <label for="address" class="block text-sm font-medium mb-1">Event Address</label>
             <input type="text" id="address" name="address" maxlength="512" class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
-            <p class="text-xs text-pauls-dark-blue/50 mt-1">Full street address — for travel calculation in your quote.</p>
+            <p class="text-xs text-pauls-dark-blue/75 mt-1">Full street address — for travel calculation in your quote.</p>
             <p class="field-error hidden text-sm text-red-600 mt-1" data-error-for="address"></p>
           </div>
         </div>
@@ -135,7 +135,7 @@ const timeSlots = Array.from({ length: 48 }, (_, i) => {
           <span class="w-6 h-1 bg-pauls-pink rounded-full"></span>
           Equipment
         </legend>
-        <p class="text-sm text-pauls-dark-blue/60 mb-4">Pick one or more setups — we'll confirm the best fit in your quote.</p>
+        <p class="text-sm text-pauls-dark-blue/75 mb-4">Pick one or more setups — we'll confirm the best fit in your quote.</p>
         <div class="grid sm:grid-cols-2 gap-3">
           {equipment.map(({ slug, name, specs, icon, needsUnits, needsBains }) => (
             <label class="equipment-card relative flex items-start gap-3 rounded-xl border-2 border-gray-200 bg-white p-4 cursor-pointer transition-colors has-[:checked]:border-pauls-blue has-[:checked]:bg-pauls-light-blue/30">
@@ -149,7 +149,7 @@ const timeSlots = Array.from({ length: 48 }, (_, i) => {
               />
               <span>
                 <span class="block font-bold text-sm">{icon} {name}</span>
-                <span class="block text-xs text-pauls-dark-blue/50 mt-1">{specs.join(' · ')}</span>
+                <span class="block text-xs text-pauls-dark-blue/75 mt-1">{specs.join(' · ')}</span>
               </span>
             </label>
           ))}
@@ -162,7 +162,7 @@ const timeSlots = Array.from({ length: 48 }, (_, i) => {
             <label class="block text-sm font-medium mb-1">Mini-pint units</label>
             <div class="space-y-2">
               <div>
-                <label for="units_normal" class="block text-xs text-pauls-dark-blue/60 mb-1">Regular Units</label>
+                <label for="units_normal" class="block text-xs text-pauls-dark-blue/75 mb-1">Regular Units</label>
                 <div class="flex items-center gap-2">
                   <button type="button" data-step="units_normal" data-dir="-1" class="w-10 h-10 rounded-lg border border-gray-300 font-bold text-lg hover:bg-gray-50" aria-label="Fewer regular units">&minus;</button>
                   <input type="number" id="units_normal" name="units_normal" min="0" max="10000" inputmode="numeric" class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-center focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
@@ -170,7 +170,7 @@ const timeSlots = Array.from({ length: 48 }, (_, i) => {
                 </div>
               </div>
               <div>
-                <label for="units_vegan" class="block text-xs text-pauls-dark-blue/60 mb-1">Vegan Units</label>
+                <label for="units_vegan" class="block text-xs text-pauls-dark-blue/75 mb-1">Vegan Units</label>
                 <div class="flex items-center gap-2">
                   <button type="button" data-step="units_vegan" data-dir="-1" class="w-10 h-10 rounded-lg border border-gray-300 font-bold text-lg hover:bg-gray-50" aria-label="Fewer vegan units">&minus;</button>
                   <input type="number" id="units_vegan" name="units_vegan" min="0" max="10000" inputmode="numeric" class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-center focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
@@ -178,7 +178,7 @@ const timeSlots = Array.from({ length: 48 }, (_, i) => {
                 </div>
               </div>
             </div>
-            <p id="units-hint" class="text-xs text-pauls-dark-blue/50 mt-1">Minimum order: 40 units.</p>
+            <p id="units-hint" class="text-xs text-pauls-dark-blue/75 mt-1">Minimum order: 40 units.</p>
             <p class="field-error hidden text-sm text-red-600 mt-1" data-error-for="units"></p>
           </div>
           <div id="bains-wrap" class="hidden">
@@ -188,7 +188,7 @@ const timeSlots = Array.from({ length: 48 }, (_, i) => {
               <input type="number" id="bains" name="bains" min="0" max="50" inputmode="numeric" class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-center focus:ring-2 focus:ring-pauls-blue focus:border-transparent outline-none" />
               <button type="button" data-step="bains" data-dir="1" class="w-10 h-10 rounded-lg border border-gray-300 font-bold text-lg hover:bg-gray-50" aria-label="More bains">+</button>
             </div>
-            <p class="text-xs text-pauls-dark-blue/50 mt-1">Minimum: 4 bains (~28–32 scoops each).</p>
+            <p class="text-xs text-pauls-dark-blue/75 mt-1">Minimum: 4 bains (~28–32 scoops each).</p>
             <p class="field-error hidden text-sm text-red-600 mt-1" data-error-for="bains"></p>
           </div>
         </div>
@@ -238,7 +238,7 @@ const timeSlots = Array.from({ length: 48 }, (_, i) => {
     <div id="form-success" class="hidden text-center py-16">
       <div class="text-5xl mb-4">&#127846;</div>
       <h2 class="text-2xl mb-2">Thanks — your quote request is in.</h2>
-      <p class="text-pauls-dark-blue/60 mb-6">We'll send your formal quote shortly.</p>
+      <p class="text-pauls-dark-blue/75 mb-6">We'll send your formal quote shortly.</p>
       <a href="/" class="text-pauls-blue font-bold hover:underline">Back to Home</a>
     </div>
   </section>

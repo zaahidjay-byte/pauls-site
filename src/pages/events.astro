@@ -17,7 +17,10 @@ const toppings = [
 <Base title="Events & Setups" description="Five ice cream setups for events in Johannesburg: the Phicycle, Scooping Freezer, Scooping Cart, the Tuk Tuk, and Countertop Freezer.">
   <!-- Hero -->
   <section class="relative text-white overflow-hidden">
-    <img src="/home-assets/events-hero.jpg" alt="Paul's Homemade ice cream tuk-tuk set up at an event" width="1920" height="1384" class="absolute inset-0 w-full h-full object-cover" />
+    <picture>
+      <source srcset="/home-assets/events-hero.webp" type="image/webp" />
+      <img src="/home-assets/events-hero.jpg" alt="Paul's Homemade ice cream tuk-tuk set up at an event" width="1920" height="1384" class="absolute inset-0 w-full h-full object-cover" />
+    </picture>
     <div class="absolute inset-0 bg-gradient-to-b from-pauls-dark-blue/80 via-pauls-dark-blue/65 to-pauls-dark-blue/85"></div>
     <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-28 md:py-40 text-center">
       <h1 class="text-4xl md:text-6xl leading-tight mb-4 !text-white [text-shadow:0_2px_12px_rgb(0_0_0_/_55%)]">Your big day,<br />scooped to perfection</h1>
@@ -61,7 +64,7 @@ const toppings = [
               </ul>
               <div class="mt-auto">
                 {ideal && (
-                  <p class="text-xs text-pauls-dark-blue/50 mb-4">
+                  <p class="text-xs text-pauls-dark-blue/75 mb-4">
                     <strong>Ideal for:</strong> {ideal}.
                   </p>
                 )}
@@ -108,7 +111,7 @@ const toppings = [
         </div>
         <div class="mt-8">
           <h3 class="text-xl mb-2">Custom Branding</h3>
-          <p class="text-sm text-pauls-dark-blue/60">{customBrandingCopy}</p>
+          <p class="text-sm text-pauls-dark-blue/75">{customBrandingCopy}</p>
         </div>
       </div>
     </div>
@@ -127,8 +130,8 @@ const toppings = [
   <!-- CTA -->
   <section class="bg-pauls-pink text-white py-16 text-center">
     <div class="max-w-3xl mx-auto px-4">
-      <h2 class="text-3xl mb-4">Ready to book?</h2>
-      <p class="text-white/80 mb-8">Tell us about your event and we'll handle the rest.</p>
+      <h2 class="text-3xl mb-4 !text-white">Ready to book?</h2>
+      <p class="text-white mb-8">Tell us about your event and we'll handle the rest.</p>
       <a href="/book" class="bg-white text-pauls-pink px-8 py-3.5 rounded-full font-bold text-lg hover:bg-pauls-offwhite transition-colors shadow-lg">
         Get a Quote
       </a>
