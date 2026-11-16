@@ -71,8 +71,9 @@ import homeSections from '../partials/home-sections.html?raw';
     document.addEventListener('DOMContentLoaded', function () {
       if (!window.Splide || !window.splide || !window.splide.Extensions) return;
       var splideElements = document.querySelectorAll('.splide');
+      window.paulsCarousels = {};
       for (var i = 0; i < splideElements.length; i++) {
-        new Splide(splideElements[i], {
+        window.paulsCarousels[splideElements[i].id] = new Splide(splideElements[i], {
           type: 'loop',
           autoWidth: true,
           height: 'auto',
@@ -88,6 +89,88 @@ import homeSections from '../partials/home-sections.html?raw';
           }
         }).mount(window.splide.Extensions);
       }
+    });
+  </script>
+
+  <!-- Flavour cards: click/tap or Enter/Space on a card shows its details side
+       (description, ingredients, allergens, certification); the X, Escape or the
+       card again closes it. Cards with no published details do not open. Runs after
+       the carousel init above, so the carousel's cloned cards are wired too. -->
+  <style is:global>
+    /* visible again at once on close (so focus can return to it), hidden only after the fade on open */
+    .flavour-card .flavours-div:not(.back) { transition: opacity .3s ease, visibility 0s; }
+    .flavour-card.is-open .flavours-div:not(.back) { opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .3s ease, visibility 0s .3s; }
+    .flavour-card.no-details .flavours-div { cursor: auto; }
+    .flavour-card [role="button"]:focus-visible { outline: 3px solid #1d44c2; outline-offset: 3px; }
+    .flavour-card .back { overflow-y: auto; }
+  </style>
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', function () {
+      var cards = document.querySelectorAll('#flavour-carousel .relative.width');
+      var carousel = function () { return window.paulsCarousels && window.paulsCarousels['flavour-carousel']; };
+      var resume = false;   // only restart the carousel if it was moving when a card opened
+      var autoScroll = function (on) {
+        var c = carousel(), a = c && c.Components && c.Components.AutoScroll;
+        if (!a) return;
+        if (!on) { if (!a.isPaused()) { resume = true; a.pause(); } }
+        else if (resume) { resume = false; a.play(); }
+      };
+
+      function setOpen(card, open, focusAfter) {
+        var front = card.querySelector('.flavours-div:not(.back)');
+        var back = card.querySelector('.flavours-div.back');
+        card.classList.toggle('is-open', open);
+        front.setAttribute('aria-expanded', open ? 'true' : 'false');
+        back.setAttribute('aria-hidden', open ? 'false' : 'true');
+        back.inert = !open;
+        if (focusAfter) (open ? back.querySelector('.close-icon') : front).focus({ preventScroll: true });
+      }
+      function closeAll(except) {
+        document.querySelectorAll('#flavour-carousel .flavour-card.is-open').forEach(function (c) {
+          if (c !== except) setOpen(c, false, false);
+        });
+      }
+      function toggle(card, focusAfter) {
+        var open = !card.classList.contains('is-open');
+        closeAll(card);
+        setOpen(card, open, focusAfter);
+        autoScroll(!open);   // hold the carousel still while a card is open
+      }
+      function onKey(e, fn) {
+        if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') { e.preventDefault(); fn(); }
+      }
+
+      cards.forEach(function (card, i) {
+        var front = card.querySelector('.flavours-div:not(.back)');
+        var back = card.querySelector('.flavours-div.back');
+        if (!front || !back) return;
+        card.classList.add('flavour-card');
+        back.setAttribute('aria-hidden', 'true');
+        back.inert = true;
+        if (!back.querySelector('.inner-div')) { card.classList.add('no-details'); return; }
+
+        var name = (front.textContent || '').trim();
+        back.id = 'flavour-details-' + i;
+        front.setAttribute('role', 'button');
+        front.setAttribute('tabindex', '0');
+        front.setAttribute('aria-expanded', 'false');
+        front.setAttribute('aria-controls', back.id);
+        front.setAttribute('aria-label', name + ': ingredients and allergens');
+        front.addEventListener('click', function () { toggle(card, false); });
+        front.addEventListener('keydown', function (e) { onKey(e, function () { toggle(card, true); }); });
+
+        var close = back.querySelector('.close-icon');
+        if (close) {
+          close.setAttribute('role', 'button');
+          close.setAttribute('tabindex', '0');
+          close.setAttribute('aria-label', 'Close ' + name + ' details');
+          close.addEventListener('click', function () { toggle(card, false); });
+          close.addEventListener('keydown', function (e) { onKey(e, function () { toggle(card, true); }); });
+        }
+        back.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape') { e.preventDefault(); toggle(card, true); }
+        });
+      });
     });
   </script>
 
