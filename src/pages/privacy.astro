@@ -1,0 +1,70 @@
+---
+// DRAFT privacy notice — not approved yet. Every "[ZEE TO CONFIRM: …]" marker must be
+// resolved before this page goes live; scripts/deploy.sh refuses to deploy while any
+// marker is in the build. Same text as PRIVACY_DRAFT.md in the repo root.
+import Base from '../layouts/Base.astro';
+import { CONTACT_EMAIL, CONTACT_PHONE_DISPLAY } from '../data/equipment';
+const todo = 'bg-yellow-100 text-pauls-dark-blue font-bold px-1 rounded';
+---
+
+<Base title="Privacy Notice" description="How Paul's Homemade Events collects and uses the personal information you give us through our quote and contact forms.">
+  <section class="bg-pauls-dark-blue text-white py-16 md:py-20 text-center">
+    <div class="max-w-4xl mx-auto px-4">
+      <h1 class="text-4xl md:text-5xl mb-4 !text-white">Privacy Notice</h1>
+      <p class="text-lg text-white/80">Last updated: <span class={todo}>[ZEE TO CONFIRM: date this notice is approved]</span></p>
+    </div>
+  </section>
+
+  <section class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 space-y-10 text-pauls-dark-blue/80 leading-relaxed">
+    <div>
+      <h2 class="text-2xl mb-3">Who we are</h2>
+      <p>This website is run by Paul's Homemade Events, the events division of an official Paul's Homemade franchise in Johannesburg, South Africa. The responsible party for your personal information under the Protection of Personal Information Act (POPIA) is <span class={todo}>[ZEE TO CONFIRM: registered legal entity name and registration number]</span>.</p>
+      <p class="mt-3">Information Officer: <span class={todo}>[ZEE TO CONFIRM: name and contact details of the Information Officer]</span>. You can also reach us at <a href={`mailto:${CONTACT_EMAIL}`} class="text-pauls-blue underline">{CONTACT_EMAIL}</a> or {CONTACT_PHONE_DISPLAY}.</p>
+    </div>
+
+    <div>
+      <h2 class="text-2xl mb-3">What we collect</h2>
+      <p><strong>Quote form</strong> (Get a Quote): your name, email address and phone number (optional); your event type, date, start and end time and guest count; the venue name, venue type and venue address; the setups and quantities you choose; any custom branding notes and special requests you type in.</p>
+      <p class="mt-3"><strong>Contact form</strong>: your name, surname (optional), email address, phone number (optional) and your message.</p>
+      <p class="mt-3">We only receive what you type into these forms. If you phone, WhatsApp, email or message us on Instagram instead, we receive whatever you send us that way.</p>
+    </div>
+
+    <div>
+      <h2 class="text-2xl mb-3">Why we use it</h2>
+      <ul class="list-disc pl-6 space-y-1">
+        <li>to reply to your message or quote request;</li>
+        <li>to prepare and send your quote, and to plan and deliver your event if you book;</li>
+        <li>to keep a record of your enquiry and booking.</li>
+      </ul>
+      <p class="mt-3">When you send a form, our team receives an email with your details, and you receive an email confirming we got it. If you book, we send you a reminder email before your event. We may contact you by email, phone or WhatsApp about your enquiry or event. We do not add you to a marketing mailing list from these forms, and we do not sell your information.</p>
+    </div>
+
+    <div>
+      <h2 class="text-2xl mb-3">Where it goes</h2>
+      <p>The forms send your details over an encrypted (HTTPS) connection to our own booking system, which stores them in our database and sends the emails described above through our email service. Only our team can access it.</p>
+      <p class="mt-3">Our server is hosted by <span class={todo}>[ZEE TO CONFIRM: hosting provider and the country the server is in — if it is outside South Africa, this is a cross-border transfer and must be stated here]</span>. Our website is delivered through Cloudflare, which protects the site from abuse.</p>
+      <p class="mt-3"><span class={todo}>[ZEE TO CONFIRM: is any enquiry or booking information shared with Paul's Homemade (the franchisor) or anyone else? If yes, say who and why.]</span></p>
+    </div>
+
+    <div>
+      <h2 class="text-2xl mb-3">Technical information</h2>
+      <p>Like most websites, our server and Cloudflare record technical details of each visit, such as your IP address, browser type and the pages you open, to keep the site working and secure. Our booking system also uses your IP address briefly to limit repeated form submissions; it is not saved with your enquiry. <span class={todo}>[ZEE TO CONFIRM: how long server logs are kept]</span></p>
+      <p class="mt-3">Our pages load fonts and code from other providers (Adobe Fonts, Google Fonts, jsDelivr and Webflow's content network), which receive your IP address when your browser fetches them. Apart from the Flavours page noted next, this site does not use analytics or advertising cookies. <span class={todo}>[ZEE TO CONFIRM: our Flavours page currently also loads Google Tag Manager and Google reCAPTCHA, copied from paulshomemade.com. Either remove them from that page, or keep them and name them here.]</span></p>
+    </div>
+
+    <div>
+      <h2 class="text-2xl mb-3">How long we keep it</h2>
+      <p><span class={todo}>[ZEE TO CONFIRM: how long enquiry, contact and booking records are kept, and what happens after that. Our system does not currently delete them automatically.]</span></p>
+    </div>
+
+    <div>
+      <h2 class="text-2xl mb-3">Your rights</h2>
+      <p>Under POPIA you may ask us what personal information we hold about you, ask us to correct or delete it, and object to us using it. Email <a href={`mailto:${CONTACT_EMAIL}`} class="text-pauls-blue underline">{CONTACT_EMAIL}</a> and we will respond. If you are unhappy with how we handle your information, you may complain to the Information Regulator (South Africa). <span class={todo}>[ZEE TO CONFIRM: add the Information Regulator's current contact details]</span></p>
+    </div>
+
+    <div>
+      <h2 class="text-2xl mb-3">Changes</h2>
+      <p>We will update this notice if what we collect or how we use it changes, and change the date at the top.</p>
+    </div>
+  </section>
+</Base>
