@@ -1,8 +1,9 @@
 # Privacy Notice — DRAFT for Zee's approval
 
-This is the text of the new page at `/privacy/` (`src/pages/privacy.astro`). It is not live.
-Each **[ZEE TO CONFIRM: …]** needs your answer before it can go live; the deploy script
-refuses to publish while any of them is still in the site.
+This is the text of the new page at `/privacy/` (`src/pages/privacy/[...slug].astro`). It is
+not live: the page is switched off (`PRIVACY_NOTICE_LIVE = false` in `src/config/site.ts`), so it
+is not built or linked. Each **[ZEE TO CONFIRM: …]** needs your answer before it can be
+switched on; the deploy refuses a switched-on page that still has any of them.
 
 It describes only what the website forms actually do today (checked against the quote
 form, the contact form and the booking system they send to, admin.paulshomemade.co.za).

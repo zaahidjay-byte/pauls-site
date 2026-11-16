@@ -2,6 +2,7 @@
 // Footer styled to match the Paul's Homemade (.com) footer FORMAT — colours, fonts,
 // layout via the shared Webflow classes — but populated with OUR information.
 import { CONTACT_EMAIL, CONTACT_PHONE_DISPLAY, CONTACT_PHONE_TEL, CONTACT_WHATSAPP, INSTAGRAM_URL } from '../data/equipment';
+import { PRIVACY_NOTICE_LIVE } from '../config/site';
 
 const year = new Date().getFullYear();
 ---
@@ -22,7 +23,7 @@ const year = new Date().getFullYear();
         <a href="/book/" class="navigation-links">Get a Quote</a>
         <a href="/contact/" class="navigation-links">Contact</a>
         <a href="/flavours/" class="navigation-links">Our Flavours</a>
-        <a href="/privacy/" class="navigation-links">Privacy Notice</a>
+        {PRIVACY_NOTICE_LIVE && <a href="/privacy/" class="navigation-links">Privacy Notice</a>}
       </div>
 
       <div class="div downwards">

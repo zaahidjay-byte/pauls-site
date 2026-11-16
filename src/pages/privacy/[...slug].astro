@@ -1,9 +1,18 @@
 ---
 // DRAFT privacy notice — not approved yet. Every "[ZEE TO CONFIRM: …]" marker must be
-// resolved before this page goes live; scripts/deploy.sh refuses to deploy while any
-// marker is in the build. Same text as PRIVACY_DRAFT.md in the repo root.
-import Base from '../layouts/Base.astro';
-import { CONTACT_EMAIL, CONTACT_PHONE_DISPLAY } from '../data/equipment';
+// resolved before this page goes live. Same text as PRIVACY_DRAFT.md in the repo root.
+//
+// Gated by PRIVACY_NOTICE_LIVE (src/config/site.ts). This file is a rest route only so
+// that it can build nothing: while the switch is false getStaticPaths returns no paths,
+// so there is no /privacy/ page at all. When true it builds exactly /privacy/.
+import Base from '../../layouts/Base.astro';
+import { CONTACT_EMAIL, CONTACT_PHONE_DISPLAY } from '../../data/equipment';
+import { PRIVACY_NOTICE_LIVE } from '../../config/site';
+
+export function getStaticPaths() {
+  return PRIVACY_NOTICE_LIVE ? [{ params: { slug: undefined } }] : [];
+}
+
 const todo = 'bg-yellow-100 text-pauls-dark-blue font-bold px-1 rounded';
 ---
 

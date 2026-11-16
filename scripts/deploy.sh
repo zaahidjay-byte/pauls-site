@@ -38,9 +38,9 @@ npm run build >/dev/null
 [ -f dist/index.html ] || die "build produced no dist/index.html"
 
 # 3. Nothing unfinished goes live.
-if grep -rlq 'ZEE TO CONFIRM' dist; then
-  die "the build still contains [ZEE TO CONFIRM] markers (privacy notice not approved). Resolve them, or remove the privacy page, its footer link and its sitemap.xml entry, then commit."
-fi
+#    Privacy notice: built and linked only when PRIVACY_NOTICE_LIVE (src/config/site.ts) is
+#    true, and then it must have no [ZEE TO CONFIRM] markers left.
+bash scripts/check-privacy-gate.sh . || die "privacy gate failed (see above)"
 if grep -rliq 'lorem ipsum' dist; then die "the build contains Lorem ipsum"; fi
 
 # 4. Server tool + preflight (release folder exists and is writable, current is a symlink).

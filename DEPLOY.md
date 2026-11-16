@@ -16,8 +16,11 @@ What it does, in order:
 1. Stops unless you are on `main` with nothing uncommitted (tracked files, or anything
    untracked under `src/`, `public/` or the config files), so git says exactly what is live.
 2. Builds `dist/` from scratch.
-3. Stops if the build contains `[ZEE TO CONFIRM` (the privacy notice is still a draft) or
-   "Lorem ipsum".
+3. Runs the privacy gate (`scripts/check-privacy-gate.sh`) and stops on "Lorem ipsum".
+   The privacy notice is switched by `PRIVACY_NOTICE_LIVE` in `src/config/site.ts`
+   (false today): while false, /privacy/ is not built, not in the sitemap and not linked,
+   so it does not hold up other fixes. Set it true only after Zee approves the text; the
+   gate then refuses any build that still has a `[ZEE TO CONFIRM` marker.
 4. Copies `scripts/remote-release.sh` to `~/bin/pauls-site-release.sh` on the server and runs
    its preflight (release folder exists and is writable; `current` is a symlink).
 5. Uploads `dist/` into a new folder `releases/<UTC time>-<commit>/`. The live site is not
@@ -110,6 +113,7 @@ Only then run `bash scripts/deploy.sh prod` for this release.
 - **robots.txt** is managed by Cloudflare, and there is none in this repo, so nothing was
   added. To point search engines at the new sitemap, add
   `Sitemap: https://paulshomemade.co.za/sitemap.xml` in Cloudflare's robots.txt setting.
-- **Privacy notice.** `/privacy/` is in the build and linked from the footer, so the deploy
-  is blocked until Zee answers the `[ZEE TO CONFIRM]` items in `PRIVACY_DRAFT.md` (or the page,
-  its footer link and its `public/sitemap.xml` entry are removed).
+- **Privacy notice.** Off (`PRIVACY_NOTICE_LIVE = false`) until Zee answers the
+  `[ZEE TO CONFIRM]` items in `PRIVACY_DRAFT.md`; then resolve them in
+  `src/pages/privacy/[...slug].astro`, set the switch to true, and deploy.
+  Test: `bash scripts/test-privacy-gate.sh`.
