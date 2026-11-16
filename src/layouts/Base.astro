@@ -50,6 +50,9 @@ const ogImage = new URL('/og-image.jpg', SITE).href;
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
+    <!-- Page-specific head tags (e.g. the hero image preload on home and events) -->
+    <slot name="head" />
+
     <!-- Webflow theme (shared navbar styling, site-wide) + brand fonts -->
     <link rel="preconnect" href="https://cdn.prod.website-files.com" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://use.typekit.net/uei3rav.css" />

@@ -9,11 +9,26 @@ import homeSections from '../partials/home-sections.html?raw';
 ---
 
 <Base>
+  <!-- Hero image is the LCP element: preload the size the browser will pick.
+       Phones get a centred crop (what object-cover shows there anyway), wider screens
+       the full frame. Keep these in step with the <source> tags below. -->
+  <Fragment slot="head">
+    <link rel="preload" as="image" type="image/webp" media="(max-width: 767px)" fetchpriority="high"
+      imagesrcset="/home-assets/hero-home-m480.webp 480w, /home-assets/hero-home-m800.webp 800w, /home-assets/hero-home-m1080.webp 1080w"
+      imagesizes="100vw" />
+    <link rel="preload" as="image" type="image/webp" media="(min-width: 768px)" fetchpriority="high"
+      imagesrcset="/home-assets/hero-home-960.webp 960w, /home-assets/hero-home-1280.webp 1280w, /home-assets/hero-home-1920.webp 1920w"
+      imagesizes="100vw" />
+  </Fragment>
+
   <!-- Hero -->
   <section class="relative bg-pauls-blue text-white overflow-hidden">
     <picture>
-      <source srcset="/home-assets/home-hero.webp" type="image/webp" />
-      <img src="/home-assets/home-hero.jpg" alt="Paul's Homemade ice cream tuk-tuk staffed and ready to serve at an event" width="1920" height="1384" class="absolute inset-0 w-full h-full object-cover" />
+      <source media="(max-width: 767px)" type="image/webp" sizes="100vw"
+        srcset="/home-assets/hero-home-m480.webp 480w, /home-assets/hero-home-m800.webp 800w, /home-assets/hero-home-m1080.webp 1080w" />
+      <source type="image/webp" sizes="100vw"
+        srcset="/home-assets/hero-home-960.webp 960w, /home-assets/hero-home-1280.webp 1280w, /home-assets/hero-home-1920.webp 1920w" />
+      <img src="/home-assets/home-hero.jpg" alt="Paul's Homemade ice cream tuk-tuk staffed and ready to serve at an event" width="1920" height="1384" fetchpriority="high" decoding="async" class="absolute inset-0 w-full h-full object-cover" />
     </picture>
     <div class="absolute inset-0 bg-gradient-to-br from-pauls-blue/85 via-pauls-dark-blue/75 to-pauls-blue/85"></div>
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-36 text-center">
@@ -106,7 +121,6 @@ import homeSections from '../partials/home-sections.html?raw';
   </style>
   <script is:inline>
     document.addEventListener('DOMContentLoaded', function () {
-      var cards = document.querySelectorAll('#flavour-carousel .relative.width');
       var carousel = function () { return window.paulsCarousels && window.paulsCarousels['flavour-carousel']; };
       var resume = false;   // only restart the carousel if it was moving when a card opened
       var autoScroll = function (on) {
@@ -123,6 +137,8 @@ import homeSections from '../partials/home-sections.html?raw';
         front.setAttribute('aria-expanded', open ? 'true' : 'false');
         back.setAttribute('aria-hidden', open ? 'false' : 'true');
         back.inert = !open;
+        var close = back.querySelector('.close-icon');   // tabbable only while its side is showing
+        if (close) close.setAttribute('tabindex', open && !card.closest('.splide__slide--clone') ? '0' : '-1');
         if (focusAfter) (open ? back.querySelector('.close-icon') : front).focus({ preventScroll: true });
       }
       function closeAll(except) {
@@ -140,36 +156,67 @@ import homeSections from '../partials/home-sections.html?raw';
         if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') { e.preventDefault(); fn(); }
       }
 
-      cards.forEach(function (card, i) {
-        var front = card.querySelector('.flavours-div:not(.back)');
-        var back = card.querySelector('.flavours-div.back');
-        if (!front || !back) return;
-        card.classList.add('flavour-card');
-        back.setAttribute('aria-hidden', 'true');
-        back.inert = true;
-        if (!back.querySelector('.inner-div')) { card.classList.add('no-details'); return; }
+      // Mark up every card. Re-run whenever a carousel rebuilds its clones (Splide copies
+      // the real slides, attributes and all), so it must be safe to run again.
+      var FOCUSABLE = 'a[href], button, input, select, textarea, iframe, [tabindex]';
+      function setup() {
+        document.querySelectorAll('#flavour-carousel .relative.width').forEach(function (card, i) {
+          var front = card.querySelector('.flavours-div:not(.back)');
+          var back = card.querySelector('.flavours-div.back');
+          if (!front || !back) return;
+          var isClone = !!card.closest('.splide__slide--clone');
+          card.classList.add('flavour-card');
+          card.classList.remove('is-open');
+          back.setAttribute('aria-hidden', 'true');
+          back.inert = true;
+          if (!back.querySelector('.inner-div')) { card.classList.add('no-details'); return; }
 
-        var name = (front.textContent || '').trim();
-        back.id = 'flavour-details-' + i;
-        front.setAttribute('role', 'button');
-        front.setAttribute('tabindex', '0');
-        front.setAttribute('aria-expanded', 'false');
-        front.setAttribute('aria-controls', back.id);
-        front.setAttribute('aria-label', name + ': ingredients and allergens');
-        front.addEventListener('click', function () { toggle(card, false); });
-        front.addEventListener('keydown', function (e) { onKey(e, function () { toggle(card, true); }); });
-
-        var close = back.querySelector('.close-icon');
-        if (close) {
-          close.setAttribute('role', 'button');
-          close.setAttribute('tabindex', '0');
-          close.setAttribute('aria-label', 'Close ' + name + ' details');
-          close.addEventListener('click', function () { toggle(card, false); });
-          close.addEventListener('keydown', function (e) { onKey(e, function () { toggle(card, true); }); });
-        }
-        back.addEventListener('keydown', function (e) {
-          if (e.key === 'Escape') { e.preventDefault(); toggle(card, true); }
+          var name = (front.textContent || '').trim();
+          back.id = 'flavour-details-' + i;   // unique, clones included
+          front.setAttribute('role', 'button');
+          front.setAttribute('aria-expanded', 'false');
+          front.setAttribute('aria-controls', back.id);
+          front.setAttribute('aria-label', name + ': ingredients and allergens');
+          // carousel copies stay clickable but out of the tab order (they are aria-hidden)
+          front.setAttribute('tabindex', isClone ? '-1' : '0');
+          var close = back.querySelector('.close-icon');
+          if (close) {
+            close.setAttribute('role', 'button');
+            close.setAttribute('tabindex', '-1');   // setOpen makes it tabbable while open
+            close.setAttribute('aria-label', 'Close ' + name + ' details');
+          }
         });
+        // any other focusable thing inside any carousel's clones: out of the tab order
+        document.querySelectorAll('.splide__slide--clone').forEach(function (clone) {
+          clone.querySelectorAll(FOCUSABLE).forEach(function (el) { el.setAttribute('tabindex', '-1'); });
+        });
+      }
+      setup();
+      if (window.paulsCarousels) {
+        Object.keys(window.paulsCarousels).forEach(function (id) {
+          window.paulsCarousels[id].on('refresh', setup);
+        });
+      }
+
+      // One set of listeners for all cards, so rebuilt clones work without re-binding.
+      var root = document.getElementById('flavour-carousel');
+      if (!root) return;
+      function cardOf(el, sel) {
+        var hit = el.closest(sel);
+        var card = hit && hit.closest('.flavour-card');
+        return card && !card.classList.contains('no-details') ? card : null;
+      }
+      root.addEventListener('click', function (e) {
+        var card = cardOf(e.target, '.flavours-div:not(.back)') || cardOf(e.target, '.close-icon');
+        if (card) toggle(card, false);
+      });
+      root.addEventListener('keydown', function (e) {
+        var card;
+        if (e.key === 'Escape' && (card = cardOf(e.target, '.back')) && card.classList.contains('is-open')) {
+          e.preventDefault(); toggle(card, true); return;
+        }
+        card = cardOf(e.target, '.flavours-div:not(.back)') || cardOf(e.target, '.close-icon');
+        if (card) onKey(e, function () { toggle(card, true); });
       });
     });
   </script>

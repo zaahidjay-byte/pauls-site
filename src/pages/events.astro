@@ -15,11 +15,25 @@ const toppings = [
 ---
 
 <Base title="Events & Setups" description="Five ice cream setups for events in Johannesburg: the Phicycle, Scooping Freezer, Scooping Cart, the Tuk Tuk, and Countertop Freezer.">
+  <!-- Hero image is the LCP element: preload the size the browser will pick (keep in step
+       with the <source> tags below). Phones get a centred crop, wider screens the full frame. -->
+  <Fragment slot="head">
+    <link rel="preload" as="image" type="image/webp" media="(max-width: 767px)" fetchpriority="high"
+      imagesrcset="/home-assets/hero-events-m480.webp 480w, /home-assets/hero-events-m800.webp 800w, /home-assets/hero-events-m1080.webp 1080w"
+      imagesizes="100vw" />
+    <link rel="preload" as="image" type="image/webp" media="(min-width: 768px)" fetchpriority="high"
+      imagesrcset="/home-assets/hero-events-960.webp 960w, /home-assets/hero-events-1280.webp 1280w, /home-assets/hero-events-1920.webp 1920w"
+      imagesizes="100vw" />
+  </Fragment>
+
   <!-- Hero -->
   <section class="relative text-white overflow-hidden">
     <picture>
-      <source srcset="/home-assets/events-hero.webp" type="image/webp" />
-      <img src="/home-assets/events-hero.jpg" alt="Paul's Homemade ice cream tuk-tuk set up at an event" width="1920" height="1384" class="absolute inset-0 w-full h-full object-cover" />
+      <source media="(max-width: 767px)" type="image/webp" sizes="100vw"
+        srcset="/home-assets/hero-events-m480.webp 480w, /home-assets/hero-events-m800.webp 800w, /home-assets/hero-events-m1080.webp 1080w" />
+      <source type="image/webp" sizes="100vw"
+        srcset="/home-assets/hero-events-960.webp 960w, /home-assets/hero-events-1280.webp 1280w, /home-assets/hero-events-1920.webp 1920w" />
+      <img src="/home-assets/events-hero.jpg" alt="Paul's Homemade ice cream tuk-tuk set up at an event" width="1920" height="1384" fetchpriority="high" decoding="async" class="absolute inset-0 w-full h-full object-cover" />
     </picture>
     <div class="absolute inset-0 bg-gradient-to-b from-pauls-dark-blue/80 via-pauls-dark-blue/65 to-pauls-dark-blue/85"></div>
     <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-28 md:py-40 text-center">
