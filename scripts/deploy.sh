@@ -58,9 +58,12 @@ ssh "$SSH_HOST" "bash $REMOTE_TOOL $TARGET activate $ID"
 
 # 7. Check on the server; if anything fails, put the previous release back at once.
 if ! ssh "$SSH_HOST" "bash $REMOTE_TOOL $TARGET verify"; then
-  echo "==> checks failed: rolling back" >&2
-  ssh "$SSH_HOST" "bash $REMOTE_TOOL $TARGET rollback"
-  die "deploy rolled back; the previous release is live again"
+  echo "==> checks failed on release $ID: rolling back" >&2
+  if ssh "$SSH_HOST" "bash $REMOTE_TOOL $TARGET rollback"; then
+    die "DEPLOY FAILED, ROLLED BACK: the previous release is live again and answered its checks (above). $ID stays on the server, unused."
+  else
+    die "DEPLOY FAILED AND THE ROLLBACK DID NOT VERIFY: read the lines above, check $PUBLIC/ by hand now, and stop for Zee."
+  fi
 fi
 
 # 8. One public check through Cloudflare (HTML is not cached there).

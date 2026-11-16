@@ -25,11 +25,22 @@ What it does, in order:
 6. Backs up the live release to `~/backups/pauls-site/prod-<release>-<time>.tar.gz` on the
    server, then swaps the `current` symlink to the new release with one rename (atomic: there
    is no moment without a site, unlike delete-then-rename).
-7. Checks eight URLs on the server itself (straight to nginx, not through Cloudflare):
-   home, events, flavours, story, book, contact, sitemap and one animation, each must return
-   200 and contain an expected phrase. If any fails it rolls back by itself and stops.
+7. Checks nine URLs on the server itself (straight to nginx, not through Cloudflare):
+   home (twice: "How It Works" and the flavour "Ingredients"), events, flavours, story, book,
+   contact, sitemap and one animation. Each must return 200 and show an expected phrase in
+   the page text (HTML comments are ignored). If any fails it rolls back by itself and says
+   plainly whether the rollback answered its own checks.
 8. Checks the public homepage through Cloudflare and prints the one-line rollback:
    `ssh stl-vps 'bash ~/bin/pauls-site-release.sh prod rollback'`
+
+The server script refuses to run unless the host is `smarttech-vps` (stl-vps) and the user is
+zee, and it refuses the `PAULS_SITE_*` test overrides unless run with `--test` (local test only).
+
+**Rollback to the pre-switch release:** the first deploy after the one-time setup rolls back,
+if it has to, to `00000000-pre-switch`, the copy of the old site. The old site cannot pass the
+new site's checks (it has no sitemap, no flavour details), so for that release the script only
+checks that the home page returns 200. The operator then checks the old site by hand: open the
+home page and a couple of pages and confirm they load.
 
 Nothing is ever deleted: old releases and backup tarballs stay until Zee says to prune them.
 
