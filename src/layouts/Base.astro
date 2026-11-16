@@ -6,16 +6,23 @@ import '../styles/global.css';
 import '../styles/webflow-theme.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { CONTACT_PHONE_TEL } from '../data/equipment';
+import { CONTACT_PHONE_TEL, CONTACT_EMAIL, INSTAGRAM_URL } from '../data/equipment';
 
 interface Props {
-  title: string;
+  /** page name; omit on the homepage so the title is just the brand */
+  title?: string;
   description?: string;
 }
 
 const { title, description = "Book Paul's Homemade Ice Cream for your next event in Johannesburg. Full-service ice cream catering for weddings, birthdays, corporate events & more." } = Astro.props;
-const fullTitle = `${title} | Paul's Homemade Events — Johannesburg`;
-const ogImage = new URL('/og-image.jpg', Astro.site ?? 'https://paulshomemade.co.za').href;
+const brandTitle = "Paul's Homemade Events — Johannesburg";
+const fullTitle = title ? `${title} | ${brandTitle}` : brandTitle;
+// One host for every canonical/og:url: the apex (www redirects there in nginx).
+const SITE = 'https://paulshomemade.co.za';
+let canonicalPath = Astro.url.pathname;
+if (!canonicalPath.endsWith('/')) canonicalPath += '/';
+const canonical = new URL(canonicalPath, SITE).href;
+const ogImage = new URL('/og-image.jpg', SITE).href;
 ---
 
 <!doctype html>
@@ -25,6 +32,7 @@ const ogImage = new URL('/og-image.jpg', Astro.site ?? 'https://paulshomemade.co
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <title>{fullTitle}</title>
+    <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
@@ -34,9 +42,13 @@ const ogImage = new URL('/og-image.jpg', Astro.site ?? 'https://paulshomemade.co
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
     <meta property="og:locale" content="en_ZA" />
     <meta property="og:image" content={ogImage} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
 
     <!-- Webflow theme (shared navbar styling, site-wide) + brand fonts -->
     <link rel="preconnect" href="https://cdn.prod.website-files.com" crossorigin="anonymous" />
@@ -52,6 +64,8 @@ const ogImage = new URL('/og-image.jpg', Astro.site ?? 'https://paulshomemade.co
       "areaServed": { "@type": "City", "name": "Johannesburg" },
       "serviceType": "Event Ice Cream Catering",
       "telephone": CONTACT_PHONE_TEL,
+      "email": CONTACT_EMAIL,
+      "sameAs": [INSTAGRAM_URL],
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Johannesburg",
